@@ -581,3 +581,5 @@ console.log(
     OPS.VERSION
 );
 
+// รองรับไฟล์เก่า
+OPS.checkindex = OPS.checkIndex;
