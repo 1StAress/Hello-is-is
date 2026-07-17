@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+OPS Portal Login
+</title>
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+
+<link rel="stylesheet" href="./component/style.css">
+
+
+<style>
+
+
+body{
+
+    margin:0;
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+
+    font-family:
+
+    "Noto Sans Thai",
+    "Inter",
+    sans-serif;
+
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #020617,
+        #082f49,
+        #0c4a6e,
+        #020617
+    );
+
+
+    background-size:400% 400%;
+
+
+    animation:
+
+    oceanMove 18s ease infinite;
+
+
+}
+
+
+
+/* ocean wave */
+
+body::before{
+
+
+    content:"";
+
+
+    position:fixed;
+
+    bottom:-120px;
+
+    left:-10%;
+
+
+    width:120%;
+
+    height:220px;
+
+
+    background:
+
+    radial-gradient(
+        ellipse,
+        rgba(56,189,248,.35),
+        transparent 70%
+    );
+
+
+    animation:
+
+    waveMove 8s ease-in-out infinite;
+
+
+}
+
+
+
+
+body::after{
+
+
+    content:"";
+
+
+    position:fixed;
+
+    width:500px;
+
+    height:500px;
+
+
+    right:-200px;
+
+    top:-200px;
+
+
+    background:
+
+    radial-gradient(
+        circle,
+        rgba(14,165,233,.35),
+        transparent 70%
+    );
+
+
+    filter:blur(50px);
+
+
+}
+
+
+
+
+
+@keyframes oceanMove{
+
+
+0%{
+
+background-position:0% 50%;
+
+}
+
+
+50%{
+
+background-position:100% 50%;
+
+}
+
+
+100%{
+
+background-position:0% 50%;
+
+}
+
+
+}
+
+
+
+@keyframes waveMove{
+
+
+0%{
+
+transform:translateX(-50px);
+
+}
+
+
+50%{
+
+transform:translateX(50px);
+
+}
+
+
+100%{
+
+transform:translateX(-50px);
+
+}
+
+
+}
+
+
+
+
+.index-card{
+
+
+    position:relative;
+
+    z-index:2;
+
+
+    width:100%;
+
+    max-width:420px;
+
+
+    padding:35px;
+
+
+    border-radius:30px;
+
+
+    background:
+
+    rgba(15,23,42,.75);
+
+
+    backdrop-filter:
+
+    blur(25px);
+
+
+    border:
+
+    1px solid
+
+    rgba(56,189,248,.3);
+
+
+    box-shadow:
+
+    0 0 60px
+
+    rgba(0,0,0,.5);
+
+
+    animation:
+
+    indexEnter .8s ease;
+
+
+}
+
+
+
+
+@keyframes indexEnter{
+
+
+from{
+
+opacity:0;
+
+transform:translateY(40px);
+
+}
+
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+
+}
+
+
+
+
+
+input{
+
+
+    background:white!important;
+
+    color:#0f172a!important;
+
+}
+
+
+
+
+
+.index-btn{
+
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #0284c7,
+        #06b6d4
+    );
+
+
+}
+
+
+
+.index-btn:hover{
+
+
+    transform:
+
+    translateY(-3px);
+
+
+    box-shadow:
+
+    0 0 30px
+
+    rgba(34,211,238,.5);
+
+
+}
+
+
+
+#admin-popup{
+
+
+    display:none;
+
+
+}
+
+
+
+
+
+</style>
+
+
+</head>
+
+
+
+
+
+<body>
+
+
+
+
+
+<div class="index-card">
+
+
+
+
+
+
+<h1
+
+class="
+text-4xl
+font-bold
+text-center
+text-white
+mb-2
+">
+
+OPS Portal
+
+</h1>
+
+
+
+
+
+<p
+
+class="
+text-center
+text-cyan-300
+mb-8
+">
+
+Operation Control Center
+
+</p>
+
+
+
+
+
+
+
+<input
+
+id="username"
+
+placeholder="Username"
+
+class="
+w-full
+border
+p-3
+rounded-xl
+mb-4
+"
+
+>
+
+
+
+
+
+
+
+<input
+
+id="password"
+
+type="password"
+
+placeholder="Password"
+
+class="
+w-full
+border
+p-3
+rounded-xl
+mb-4
+"
+
+>
+
+
+
+
+
+
+
+<label
+
+class="
+flex
+gap-2
+items-center
+text-white
+mb-5
+">
+
+
+<input
+
+id="remember"
+
+type="checkbox"
+
+>
+
+
+Remember Me
+
+
+</label>
+
+
+
+
+
+
+
+
+<button
+
+id="index-btn"
+
+class="
+index-btn
+w-full
+text-white
+p-3
+rounded-xl
+font-bold
+transition
+">
+
+Login
+
+</button>
+
+
+
+
+
+
+
+
+<button
+
+onclick="openAdmin()"
+
+class="
+w-full
+mt-4
+bg-slate-700
+text-cyan-300
+p-3
+rounded-xl
+transition
+">
+
+ติดต่อ Admin
+
+</button>
+
+
+
+
+
+
+
+
+
+<p
+
+id="message"
+
+class="
+text-center
+mt-4
+text-red-400
+">
+
+</p>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ADMIN POPUP -->
+
+
+<div
+
+id="admin-popup"
+
+class="
+fixed
+inset-0
+bg-black/60
+backdrop-blur
+items-center
+justify-center
+z-50
+">
+
+
+<div
+
+class="
+bg-white
+rounded-3xl
+p-6
+text-center
+w-80
+">
+
+
+<h2
+
+class="
+text-xl
+font-bold
+mb-4
+">
+
+ติดต่อ Admin
+
+</h2>
+
+
+
+
+<div
+id="qrPopup"
+class="
+flex
+justify-center
+mb-4
+"
+></div>
+
+
+
+
+<p>
+
+instagram ntc_ss._.p
+
+</p>
+
+
+
+
+<button
+
+onclick="closeAdmin()"
+
+class="
+mt-4
+bg-blue-600
+text-white
+px-5
+py-2
+rounded-xl
+">
+
+Close
+
+</button>
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+function openAdmin() {
+    
+    document.getElementById("admin-popup").style.display = "flex";
+    
+    createQR();
+    
+}
+
+
+function closeAdmin() {
+    
+    document.getElementById("admin-popup").style.display = "none";
+    
+}
+
+
+function createQR() {
+    
+    const text = "https://instagram.com/NTC_SS_P";
+    
+    QRCode.toCanvas(
+        text,
+        {
+            width: 250,
+            margin: 2
+        },
+        function(error, canvas) {
+            
+            if (error) {
+                console.error(error);
+                return;
+            }
+            
+            const box = document.getElementById("qrPopup");
+            
+            box.innerHTML = "";
+            
+            box.appendChild(canvas);
+            
+        }
+    );
+    
+}
+
+
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
+
+
+<script src="./component/common.js"></script>
+
+
+<script src="./index.js"></script>
+
+
+
+</body>
+
+
+</html>
