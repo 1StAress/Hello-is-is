@@ -1,0 +1,1707 @@
+/* =====================================
+   OPS PORTAL THEME V7
+   HUTCHISON PORT CONTROL CENTER
+===================================== */
+
+
+/* =====================================
+   RESET
+===================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+
+
+body{
+
+    margin:0;
+
+    min-height:100vh;
+
+
+    font-family:
+    "Noto Sans Thai",
+    "Inter",
+    system-ui,
+    sans-serif;
+
+
+    color:#e2e8f0;
+
+
+    overflow-x:hidden;
+
+
+
+    background:
+
+
+    linear-gradient(
+
+        180deg,
+
+        #020617 0%,
+
+        #06263f 45%,
+
+        #031525 100%
+
+    );
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   OCEAN BACKGROUND
+===================================== */
+
+
+body::before{
+
+
+    content:"";
+
+
+    position:fixed;
+
+
+    inset:0;
+
+
+    z-index:-2;
+
+
+    pointer-events:none;
+
+
+
+    background:
+
+
+    radial-gradient(
+
+        circle at 80% 20%,
+
+        rgba(14,165,233,.25),
+
+        transparent 40%
+
+    ),
+
+
+
+    radial-gradient(
+
+        circle at 20% 80%,
+
+        rgba(6,182,212,.18),
+
+        transparent 45%
+
+    );
+
+
+
+    animation:
+
+    oceanLight 18s ease infinite;
+
+
+}
+
+
+
+
+
+
+@keyframes oceanLight{
+
+
+0%{
+
+    transform:
+
+    translate(0,0);
+
+}
+
+
+
+50%{
+
+    transform:
+
+    translate(-50px,40px);
+
+}
+
+
+
+100%{
+
+    transform:
+
+    translate(0,0);
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================================
+   OCEAN GRID
+===================================== */
+
+
+body::after{
+
+
+    content:"";
+
+
+    position:fixed;
+
+
+    inset:0;
+
+
+    z-index:-1;
+
+
+    pointer-events:none;
+
+
+
+    background-image:
+
+
+
+    linear-gradient(
+
+        rgba(56,189,248,.035) 1px,
+
+        transparent 1px
+
+    ),
+
+
+
+    linear-gradient(
+
+        90deg,
+
+        rgba(56,189,248,.035) 1px,
+
+        transparent 1px
+
+    );
+
+
+
+    background-size:
+
+    60px 60px;
+
+
+
+    animation:
+
+    gridMove 35s linear infinite;
+
+
+}
+
+
+
+
+
+@keyframes gridMove{
+
+
+from{
+
+    background-position:
+
+    0 0;
+
+}
+
+
+to{
+
+    background-position:
+
+    60px 60px;
+
+}
+
+
+}
+
+
+
+
+
+
+/* =====================================
+   PAGE TRANSITION
+===================================== */
+
+
+main{
+
+
+    animation:
+
+    pageEnter .6s ease;
+
+
+}
+
+
+
+
+
+@keyframes pageEnter{
+
+
+from{
+
+
+    opacity:0;
+
+
+    transform:
+
+    translateY(20px);
+
+
+}
+
+
+
+to{
+
+
+    opacity:1;
+
+
+    transform:
+
+    translateY(0);
+
+
+}
+
+
+}
+
+
+
+
+
+
+/* =====================================
+   GLOBAL TEXT
+===================================== */
+
+
+h1,
+h2,
+h3,
+h4{
+
+
+    color:#f8fafc;
+
+
+    letter-spacing:.3px;
+
+
+}
+
+
+
+
+p{
+
+
+    color:#cbd5e1;
+
+
+}
+
+
+
+
+
+.text-slate-300{
+
+
+    color:#cbd5e1!important;
+
+
+}
+
+
+
+
+.text-slate-400{
+
+
+    color:#94a3b8!important;
+
+
+}
+
+
+
+
+
+.text-gray-500{
+
+
+    color:#94a3b8!important;
+
+
+}
+
+
+
+
+
+.text-gray-400{
+
+
+    color:#7dd3fc!important;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   GLASS PANEL
+===================================== */
+
+
+.glass-panel{
+
+
+    background:
+
+    rgba(2,15,35,.75);
+
+
+
+    backdrop-filter:
+
+    blur(20px);
+
+
+
+    border:
+
+    1px solid
+
+    rgba(56,189,248,.2);
+
+
+
+    box-shadow:
+
+    0 20px 50px
+
+    rgba(0,0,0,.4);
+
+
+}
+
+
+
+
+
+
+/* =====================================
+   CARD SYSTEM
+===================================== */
+
+
+.ops-card{
+
+
+    position:relative;
+
+
+    overflow:hidden;
+
+
+
+    padding:24px;
+
+
+
+    border-radius:26px;
+
+
+
+    background:
+
+
+    rgba(3,18,35,.82);
+
+
+
+    border:
+
+    1px solid
+
+    rgba(56,189,248,.22);
+
+
+
+    backdrop-filter:
+
+    blur(18px);
+
+
+
+    box-shadow:
+
+
+    0 15px 45px
+
+    rgba(0,0,0,.35);
+
+
+
+    transition:.35s ease;
+
+
+}
+
+
+
+
+
+.ops-card:hover{
+
+
+    transform:
+
+
+    translateY(-8px);
+
+
+
+    border-color:
+
+
+    rgba(56,189,248,.6);
+
+
+
+    box-shadow:
+
+
+    0 0 40px
+
+    rgba(14,165,233,.35);
+
+
+}
+
+
+
+
+
+
+.ops-card::before{
+
+
+    content:"";
+
+
+    position:absolute;
+
+
+    width:220px;
+
+
+    height:220px;
+
+
+    right:-100px;
+
+
+    top:-100px;
+
+
+
+    background:
+
+
+    radial-gradient(
+
+        circle,
+
+        rgba(14,165,233,.25),
+
+        transparent 70%
+
+    );
+
+
+
+    filter:
+
+    blur(30px);
+
+
+    pointer-events:none;
+
+
+}
+
+
+
+
+
+/* =====================================
+   ICON SYSTEM FIX
+===================================== */
+
+
+.icon-box{
+
+
+    width:52px;
+
+
+    height:52px;
+
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:center;
+
+
+
+    border-radius:16px;
+
+
+
+    background:
+
+
+    rgba(14,165,233,.15);
+
+
+
+    color:#38bdf8;
+
+
+
+    border:
+
+
+    1px solid
+
+    rgba(56,189,248,.25);
+
+
+
+    box-shadow:
+
+
+    0 0 20px
+
+    rgba(56,189,248,.2);
+
+
+
+    overflow:hidden;
+
+
+}
+
+
+
+
+
+.icon-box svg{
+
+
+    width:26px;
+
+
+    height:26px;
+
+
+
+    fill:none!important;
+
+
+
+    stroke:#38bdf8!important;
+
+
+
+    stroke-width:2;
+
+
+
+    filter:
+
+    drop-shadow(
+
+        0 0 8px
+
+        rgba(56,189,248,.8)
+
+    );
+
+
+
+    animation:none;
+
+
+}
+
+
+
+
+
+.icon-box svg path{
+
+
+    stroke:
+
+    currentColor;
+
+
+}
+
+
+
+
+
+.ops-card:hover .icon-box{
+
+
+    transform:
+
+    scale(1.08);
+
+
+
+    transition:.3s ease;
+
+
+}
+
+
+
+/* =====================================
+   HEADER SYSTEM
+===================================== */
+
+
+header{
+
+
+    margin:
+
+    15px 24px;
+
+
+
+    border-radius:
+
+    24px;
+
+
+
+    background:
+
+
+    rgba(2,15,35,.85)!important;
+
+
+
+    backdrop-filter:
+
+    blur(20px);
+
+
+
+    border:
+
+    1px solid
+
+    rgba(56,189,248,.25)!important;
+
+
+
+    box-shadow:
+
+
+    0 10px 35px
+
+    rgba(0,0,0,.45);
+
+
+
+}
+
+
+
+
+
+header h1{
+
+
+    color:#f8fafc;
+
+
+
+    text-shadow:
+
+
+    0 0 15px
+
+    rgba(56,189,248,.5);
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   HERO DASHBOARD
+===================================== */
+
+
+.hero-panel{
+
+
+    position:relative;
+
+
+    overflow:hidden;
+
+
+
+    border-radius:28px;
+
+
+
+    background:
+
+
+    linear-gradient(
+
+        135deg,
+
+        rgba(3,105,161,.85),
+
+        rgba(2,47,78,.9)
+
+    );
+
+
+
+    border:
+
+    1px solid
+
+    rgba(56,189,248,.3);
+
+
+
+    box-shadow:
+
+
+    0 20px 50px
+
+    rgba(0,0,0,.4);
+
+
+}
+
+
+
+
+
+.hero-panel h1,
+.hero-panel h2,
+.hero-panel h3{
+
+
+    color:white;
+
+
+}
+
+
+
+
+
+/* =====================================
+   BUTTON SYSTEM
+===================================== */
+
+
+button,
+.btn{
+
+
+    border-radius:
+
+    14px;
+
+
+
+    transition:
+
+    .3s ease;
+
+
+
+    cursor:pointer;
+
+
+}
+
+
+
+
+
+button:hover,
+.btn:hover{
+
+
+    transform:
+
+    translateY(-3px);
+
+
+}
+
+
+
+
+
+.dashboard-btn{
+
+
+    background:
+
+
+    linear-gradient(
+
+        135deg,
+
+        #0284c7,
+
+        #0369a1
+
+    )!important;
+
+
+
+    color:white!important;
+
+
+
+    border:
+
+    1px solid
+
+    rgba(125,211,252,.4);
+
+
+
+    box-shadow:
+
+
+    0 0 20px
+
+    rgba(14,165,233,.25);
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   FORM SYSTEM
+===================================== */
+
+
+input,
+textarea,
+select{
+
+
+    width:100%;
+
+
+
+    background:
+
+
+    #f8fafc!important;
+
+
+
+    color:
+
+
+    #0f172a!important;
+
+
+
+    border:
+
+
+    1px solid
+
+    #7dd3fc!important;
+
+
+
+    border-radius:
+
+
+    16px!important;
+
+
+
+    padding:
+
+
+    12px 16px!important;
+
+
+}
+
+
+
+
+
+input::placeholder,
+textarea::placeholder{
+
+
+    color:
+
+    #64748b!important;
+
+
+}
+
+
+
+
+
+label{
+
+
+    color:
+
+    #e0f2fe!important;
+
+
+
+    font-weight:
+
+    600;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   SIDEBAR
+===================================== */
+
+
+.sidebar-future{
+
+
+    background:
+
+
+    rgba(2,15,35,.96);
+
+
+
+    backdrop-filter:
+
+
+    blur(25px);
+
+
+
+    border-right:
+
+
+    1px solid
+
+    rgba(56,189,248,.2);
+
+
+
+    box-shadow:
+
+
+    15px 0 50px
+
+    rgba(0,0,0,.5);
+
+
+}
+
+
+
+
+
+.sidebar-logo{
+
+
+    color:white;
+
+
+
+    text-shadow:
+
+
+    0 0 20px
+
+    rgba(56,189,248,.7);
+
+
+}
+
+
+
+
+
+.sidebar-desc{
+
+
+    color:#94a3b8;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   SIDEBAR MENU
+===================================== */
+
+
+.menu-link{
+
+
+    color:#dbeafe;
+
+
+
+    min-height:
+
+    46px;
+
+
+
+    display:flex;
+
+
+
+    align-items:center;
+
+
+
+    gap:14px;
+
+
+
+    border-radius:
+
+    14px;
+
+
+
+    transition:
+
+    .3s ease;
+
+
+}
+
+
+
+
+
+.menu-link:hover{
+
+
+    background:
+
+
+    rgba(14,165,233,.18);
+
+
+
+    color:#67e8f9;
+
+
+
+    transform:
+
+
+    translateX(6px);
+
+
+}
+
+
+
+
+
+.menu-link svg{
+
+
+    width:22px;
+
+
+    height:22px;
+
+
+
+    fill:none!important;
+
+
+
+    stroke:#38bdf8!important;
+
+
+}
+
+
+
+
+
+.menu-link svg path{
+
+
+    stroke:
+
+    currentColor;
+
+
+}
+
+
+
+
+
+.sub-link{
+
+
+    color:#bfdbfe;
+
+
+}
+
+
+
+
+
+.sub-link:hover{
+
+
+    background:
+
+
+    rgba(14,165,233,.15);
+
+
+
+    color:#67e8f9;
+
+
+}
+
+
+
+
+
+.menu-active{
+
+
+    background:
+
+
+    rgba(14,165,233,.25);
+
+
+
+    color:#67e8f9!important;
+
+
+
+    border-left:
+
+
+    4px solid
+
+    #38bdf8;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   DASHBOARD CARD ICON FIX
+===================================== */
+
+
+.ops-card .icon-box{
+
+
+    margin-bottom:
+
+    12px;
+
+
+}
+
+
+
+
+
+.ops-card h3{
+
+
+    font-size:
+
+    1.1rem;
+
+
+}
+
+
+
+
+
+.ops-card p{
+
+
+    font-size:
+
+    .95rem;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   TABLE
+===================================== */
+
+
+table{
+
+
+    border-collapse:
+
+    separate;
+
+
+
+    border-spacing:
+
+
+    0 10px;
+
+
+}
+
+
+
+
+
+tr{
+
+
+    background:
+
+
+    rgba(3,18,35,.8);
+
+
+}
+
+
+
+
+
+th{
+
+
+    color:#7dd3fc!important;
+
+
+}
+
+
+
+
+
+td{
+
+
+    color:#e2e8f0!important;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   STATUS
+===================================== */
+
+
+.status-online{
+
+
+    color:#67e8f9;
+
+
+
+    animation:
+
+
+    pulseStatus 2s infinite;
+
+
+}
+
+
+
+
+
+@keyframes pulseStatus{
+
+
+50%{
+
+    filter:
+
+    brightness(1.5);
+
+}
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   SCROLLBAR
+===================================== */
+
+
+::-webkit-scrollbar{
+
+
+    width:
+
+    8px;
+
+
+}
+
+
+
+
+
+::-webkit-scrollbar-track{
+
+
+    background:
+
+    #020617;
+
+
+}
+
+
+
+
+
+::-webkit-scrollbar-thumb{
+
+
+    background:
+
+
+    linear-gradient(
+
+        #0369a1,
+
+        #22d3ee
+
+    );
+
+
+
+    border-radius:
+
+    10px;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+
+@media(max-width:768px){
+
+
+header{
+
+
+    margin:
+
+    10px;
+
+
+
+    border-radius:
+
+    18px;
+
+
+}
+
+
+
+
+
+.ops-card{
+
+
+    padding:
+
+    18px;
+
+
+}
+
+
+
+
+
+.icon-box{
+
+
+    width:
+
+    46px;
+
+
+
+    height:
+
+    46px;
+
+
+}
+
+
+
+
+
+.icon-box svg{
+
+
+    width:
+
+    22px;
+
+
+
+    height:
+
+    22px;
+
+
+}
+
+
+
+}
+
+/* =====================================
+   KNOWLEDGE SUB MENU ANIMATION
+===================================== */
+
+#knowledge-menu {
+    
+    display: flex;
+    
+    flex-direction: column;
+    
+    gap: 8px;
+    
+    margin-top: 8px;
+    
+    padding-left: 12px;
+    
+    
+    max-height: 0;
+    
+    overflow: hidden;
+    
+    opacity: 0;
+    
+    
+    transition:
+    
+        max-height .4s ease,
+        
+        opacity .3s ease;
+    
+    
+}
+
+
+
+#knowledge-menu:not(.hidden) {
+    
+    max-height: 300px;
+    
+    opacity: 1;
+    
+}
+
+
+
+
+
+.sub-link {
+    
+    animation:
+    
+        menuSlide .35s ease;
+    
+    
+}
+
+
+
+@keyframes menuSlide {
+    
+    
+    from {
+        
+        opacity: 0;
+        
+        transform:
+        
+            translateX(-15px);
+        
+    }
+    
+    
+    
+    to {
+        
+        opacity: 1;
+        
+        transform:
+        
+            translateX(0);
+        
+    }
+    
+    
+}
