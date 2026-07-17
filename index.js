@@ -273,3 +273,54 @@ Index.init();
 
 });
 
+function openAdmin() {
+  
+  document
+    .getElementById("admin-popup")
+    .style.display = "flex";
+  
+  
+  createQR();
+  
+}
+
+
+
+function closeAdmin() {
+  
+  document
+    .getElementById("admin-popup")
+    .style.display = "none";
+  
+}
+
+
+
+function createQR() {
+  
+  const text =
+    "https://instagram.com/ntc_ss._.p";
+  
+  
+  const box =
+    document.getElementById(
+      "qrPopup"
+    );
+  
+  
+  box.innerHTML = "";
+  
+  
+  new QRCode(
+    box,
+    {
+      text: text,
+      width: 250,
+      height: 250,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    }
+  );
+  
+}
