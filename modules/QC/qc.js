@@ -680,7 +680,7 @@ const QC = {
 
         <details class="mt-4">
           <summary class="cursor-pointer text-cyan-300">
-            ▼ ดูประวัติงาน ${entries.length} ครั้ง
+            ดูประวัติงาน ${entries.length} ครั้ง
           </summary>
 
           <div class="qc-history-list">
