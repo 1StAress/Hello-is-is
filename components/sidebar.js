@@ -1,62 +1,47 @@
 "use strict";
-
 /* =====================================
    OPS PORTAL — SIDEBAR NAVIGATION
    Full-file replacement
 ===================================== */
-
 window.Sidebar = window.Sidebar || {};
 const Sidebar = window.Sidebar;
-
 /* BASE PATH */
 Sidebar.getBasePath = function () {
     const path = window.location.pathname;
-
     if (path.includes("/modules/Knowledge/")) {
         return "../../../";
     }
-
     if (path.includes("/modules/")) {
         return "../../";
     }
-
     return "./";
 };
-
 /* LOAD SIDEBAR HTML */
 Sidebar.load = async function () {
     const container = document.getElementById("sidebar-container");
-
     if (!container) {
         console.warn("OPS SIDEBAR: Container not found");
         return false;
     }
-
     const file = this.getBasePath() + "components/sidebar.html";
-
     try {
         const response = await fetch(file, {
             cache: "no-cache"
         });
-
         if (!response.ok) {
             throw new Error("HTTP " + response.status);
         }
-
         container.innerHTML = await response.text();
         console.log("OPS SIDEBAR: HTML loaded");
-
         return true;
     } catch (error) {
         console.error("OPS SIDEBAR: Load error", error);
         return false;
     }
 };
-
 /* ROUTES */
 Sidebar.fixLinks = function () {
     const base = this.getBasePath();
-
     const routes = {
         dashboard: base + "dashboard.html",
         ip: base + "modules/IP/ip.html",
@@ -68,13 +53,11 @@ Sidebar.fixLinks = function () {
         spss: base + "modules/Knowledge/SPSS/spss.html",
         cps: base + "modules/Knowledge/CPS/cps.html"
     };
-
     document
         .querySelectorAll("#sidebar-container [data-link]")
         .forEach(function (link) {
             const route = link.dataset.link;
             const destination = routes[route];
-
             if (!destination) {
                 console.warn(
                     "OPS SIDEBAR: Unknown route",
@@ -82,76 +65,59 @@ Sidebar.fixLinks = function () {
                 );
                 return;
             }
-
             link.setAttribute("href", destination);
             link.setAttribute("data-route-ready", "true");
         });
 };
-
 /* SIDEBAR OPEN / CLOSE AND SUBMENU */
 Sidebar.bind = function () {
     const openButton = document.getElementById("menu-open");
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("sidebar-overlay");
-
     function closeSidebar() {
         if (sidebar) {
             sidebar.classList.add("-translate-x-full");
         }
-
         if (overlay) {
             overlay.classList.add("hidden");
         }
     }
-
     if (openButton && sidebar) {
         openButton.onclick = function () {
             sidebar.classList.remove("-translate-x-full");
-
             if (overlay) {
                 overlay.classList.remove("hidden");
             }
         };
     }
-
     if (overlay) {
         overlay.onclick = closeSidebar;
     }
-
     document
         .querySelectorAll("#sidebar-container a[data-link]")
         .forEach(function (link) {
             link.addEventListener("click", function (event) {
                 const href = link.getAttribute("href");
-
                 if (!href || href === "#") {
                     event.preventDefault();
-
                     console.error(
                         "OPS SIDEBAR: Missing destination",
                         link.dataset.link
                     );
-
                     return;
                 }
-
                 closeSidebar();
             });
         });
-
     const knowledgeToggle =
         document.getElementById("knowledge-toggle");
-
     const knowledgeMenu =
         document.getElementById("knowledge-menu");
-
     const knowledgeArrow =
         document.getElementById("knowledge-arrow");
-
     if (knowledgeToggle && knowledgeMenu) {
         knowledgeToggle.onclick = function () {
             knowledgeMenu.classList.toggle("hidden");
-
             if (knowledgeArrow) {
                 knowledgeArrow.style.transform =
                     knowledgeMenu.classList.contains("hidden")
@@ -161,11 +127,9 @@ Sidebar.bind = function () {
         };
     }
 };
-
 /* ACTIVE MENU */
 Sidebar.active = function () {
     const currentPath = window.location.pathname;
-
     document
         .querySelectorAll(
             "#sidebar-container .menu-link, " +
@@ -173,19 +137,15 @@ Sidebar.active = function () {
         )
         .forEach(function (link) {
             link.classList.remove("menu-active");
-
             const href = link.getAttribute("href");
-
             if (!href) {
                 return;
             }
-
             try {
                 const linkPath = new URL(
                     href,
                     window.location.href
                 ).pathname;
-
                 if (linkPath === currentPath) {
                     link.classList.add("menu-active");
                 }
@@ -198,29 +158,22 @@ Sidebar.active = function () {
             }
         });
 };
-
 /* INITIALIZE */
 Sidebar.init = async function () {
     console.log("OPS SIDEBAR: Initializing");
-
     const loaded = await this.load();
-
     if (!loaded) {
         return;
     }
-
     this.fixLinks();
     this.bind();
     this.active();
-
     console.log("OPS SIDEBAR: Ready");
 };
-
 /* START WHEN DOM IS READY */
 function startOpsSidebar() {
     Sidebar.init();
 }
-
 if (document.readyState === "loading") {
     document.addEventListener(
         "DOMContentLoaded",
