@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>OPS Portal 4.0 | Backup & Restore</title>
+  <link rel="stylesheet" href="./components/style.css">
+  <style>
+    :root{color-scheme:dark}
+    body{margin:0;background:#07111f;color:#e5edf7;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+    .br-wrap{max-width:1100px;margin:0 auto;padding:28px 18px 56px}
+    .br-panel{background:#0e1b2c;border:1px solid #26364c;border-radius:18px;padding:22px;margin:18px 0}
+    .br-muted{color:#9fb0c6}.br-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .br-stat{background:#12243a;border:1px solid #2b405a;border-radius:12px;padding:16px}
+    .br-btn{border:0;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer}
+    .br-primary{background:#06b6d4;color:#04202a}.br-secondary{background:#26384f;color:#e5edf7}
+    .br-danger{background:#b91c1c;color:#fff}.br-btn:disabled{opacity:.45;cursor:not-allowed}
+    .br-file{display:block;width:100%;box-sizing:border-box;background:#07111f;border:1px solid #344860;border-radius:10px;padding:12px;margin:12px 0}
+    .br-status{white-space:pre-wrap;overflow-wrap:anywhere;background:#07111f;border:1px solid #26364c;border-radius:10px;padding:14px;margin-top:14px}
+    .br-warning{border-left:4px solid #f59e0b;padding:12px 14px;background:#33270f;border-radius:8px}
+    .br-good{color:#86efac}.br-bad{color:#fca5a5}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid #26364c;overflow-wrap:anywhere}th{color:#9fb0c6}
+    code{overflow-wrap:anywhere}h1{font-size:clamp(1.7rem,4vw,2.4rem);margin:0 0 8px}
+    @media(max-width:600px){.br-panel{padding:16px}td,th{padding:8px;font-size:.9rem}}
+  </style>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+  <main class="br-wrap">
+    <p class="br-muted">OPS PORTAL 4.0 · LOCAL DATA TOOLS</p>
+    <h1>Backup &amp; Restore</h1>
+    <p class="br-muted">สำรองและกู้คืนข้อมูลในเบราว์เซอร์เครื่องนี้ โดยไม่ส่งข้อมูลออกไปยังเซิร์ฟเวอร์</p>
+
+    <section class="br-panel">
+      <h2>สถานะข้อมูลปัจจุบัน</h2>
+      <p class="br-muted">ระบบอ่านค่า Storage ดิบโดยตรง ไม่ใช้ OPS.load() เพื่อไม่ให้ข้อมูล JSON ที่เสียหายถูกเข้าใจผิดว่าเป็นข้อมูลว่าง</p>
+      <div id="current-summary" class="br-grid"></div>
+      <div id="current-status" class="br-status" role="status" aria-live="polite">กำลังตรวจสอบข้อมูล...</div>
+      <p class="br-warning">หากพบข้อมูลที่อ่านไม่ได้ ระบบจะหยุดการสำรอง/กู้คืนที่อาจทำให้ข้อมูลสูญหาย และจะไม่แก้ไขคีย์นั้นให้อัตโนมัติ</p>
+      <button id="export-btn" class="br-btn br-primary" type="button">ดาวน์โหลด Backup JSON</button>
+    </section>
+
+    <section class="br-panel">
+      <h2>ตรวจสอบไฟล์และกู้คืน</h2>
+      <p class="br-muted">เลือกไฟล์ที่สร้างจาก OPS Portal Backup &amp; Restore แล้วตรวจสอบก่อน ระบบไม่เขียนข้อมูลระหว่างขั้น Preview</p>
+      <label for="backup-file">ไฟล์ JSON สำรอง</label>
+      <input id="backup-file" class="br-file" type="file" accept=".json,application/json">
+      <button id="validate-btn" class="br-btn br-secondary" type="button">ตรวจสอบไฟล์และแสดง Preview</button>
+      <div id="preview" hidden>
+        <h3>Preview ก่อนกู้คืน</h3>
+        <div id="preview-summary"></div>
+        <div class="br-warning" style="margin:14px 0">การกู้คืนจะแทนที่ข้อมูลใน Storage Keys ทั้ง 7 รายการด้วยข้อมูลจากไฟล์ หลังจากดาวน์โหลดสำเนาข้อมูลปัจจุบันและยืนยันอีกครั้ง</div>
+        <label style="display:flex;gap:10px;align-items:flex-start;margin:14px 0">
+          <input id="confirm-restore" type="checkbox">
+          <span>ฉันตรวจสอบ Preview แล้ว เข้าใจว่าข้อมูลปัจจุบันจะถูกแทนที่ และต้องการดำเนินการต่อ</span>
+        </label>
+        <button id="restore-btn" class="br-btn br-danger" type="button" disabled>สำรองข้อมูลปัจจุบันและเริ่มกู้คืน</button>
+      </div>
+      <div id="restore-status" class="br-status" role="status" aria-live="polite">ยังไม่มีไฟล์ที่ผ่านการตรวจสอบ</div>
+    </section>
+    <section class="br-panel">
+      <h2>ข้อควรทราบ</h2>
+      <ul>
+        <li>ระบบนี้สำรองเฉพาะ 7 Storage Keys ที่ระบุ ไม่ได้สำรอง sessionStorage, รหัสผ่าน, ไฟล์ในเครื่อง หรือการตั้งค่าของเบราว์เซอร์</li>
+        <li>ข้อมูลรูปภาพที่เก็บเป็น Data URL ภายในรายการจะถูกเก็บไว้ตามเดิม</li>
+        <li>การกู้คืนหลายคีย์ไม่ใช่ธุรกรรมแบบ Atomic หากการเขียนล้มเหลว ระบบจะพยายามคืนค่า raw value เดิมทุกคีย์และรายงานผล</li>
+        <li>อย่าปิดหน้าเว็บหรือเปิดโมดูลอื่นระหว่างการกู้คืน</li>
+      </ul>
+    </section>
+  </main>
+  <script src="./components/common.js"></script>
+  <script src="./components/sidebar.js"></script>
+  <script src="./components/ui.js"></script>
+  <script src="./backup.js"></script>
+</body>
+</html>
