@@ -1,6 +1,5 @@
 // =====================================
-// OPS PORTAL V3 CORE
-// PART 1 / 4
+// OPS PORTAL V4 CORE
 // =====================================
 
 "use strict";
@@ -15,7 +14,7 @@ const OPS = window.OPS;
 // VERSION
 // =====================================
 
-OPS.VERSION = "3.2.0";
+OPS.VERSION = "4.0.0";
 
 // =====================================
 // STORAGE KEY
@@ -74,7 +73,7 @@ OPS.path = function () {
 
 OPS.ROUTES = {
 
-   index:
+    index:
         "index.html",
 
     dashboard:
@@ -133,29 +132,29 @@ OPS.go = function (page) {
 // =====================================
 
 OPS.load = function(key) {
-    
+
     try {
-        
+
         const data =
             localStorage.getItem(key);
-        
+
         return data ?
             JSON.parse(data) :
             [];
-        
+
     }
-    
+
     catch (error) {
-        
+
         console.error(
             "LOAD ERROR",
             error
         );
-        
+
         return [];
-        
+
     }
-    
+
 };
 
 // =====================================
@@ -163,29 +162,29 @@ OPS.load = function(key) {
 // =====================================
 
 OPS.save = function(key, data) {
-    
+
     try {
-        
+
         localStorage.setItem(
             key,
             JSON.stringify(data)
         );
-        
+
         return true;
-        
+
     }
-    
+
     catch (error) {
-        
+
         console.error(
             "SAVE ERROR",
             error
         );
-        
+
         return false;
-        
+
     }
-    
+
 };
 
 // =====================================
@@ -193,28 +192,28 @@ OPS.save = function(key, data) {
 // =====================================
 
 OPS.remove = function(key) {
-    
+
     try {
-        
+
         localStorage.removeItem(
             key
         );
-        
+
         return true;
-        
+
     }
-    
+
     catch (error) {
-        
+
         console.error(
             "REMOVE ERROR",
             error
         );
-        
+
         return false;
-        
+
     }
-    
+
 };
 
 // =====================================
@@ -222,26 +221,26 @@ OPS.remove = function(key) {
 // =====================================
 
 OPS.clear = function() {
-    
+
     try {
-        
+
         localStorage.clear();
-        
+
         return true;
-        
+
     }
-    
+
     catch (error) {
-        
+
         console.error(
             "CLEAR ERROR",
             error
         );
-        
+
         return false;
-        
+
     }
-    
+
 };
 
 // =====================================
@@ -249,104 +248,98 @@ OPS.clear = function() {
 // =====================================
 
 OPS.session = {
-    
+
     get(key) {
-        
+
         try {
-            
+
             return JSON.parse(
                 sessionStorage.getItem(key)
             );
-            
+
         }
-        
+
         catch {
-            
+
             return sessionStorage.getItem(key);
-            
+
         }
-        
+
     },
-    
+
     set(key, value) {
-        
+
         if (
             typeof value === "object"
         ) {
-            
+
             sessionStorage.setItem(
                 key,
                 JSON.stringify(value)
             );
-            
+
         }
-        
+
         else {
-            
+
             sessionStorage.setItem(
                 key,
                 value
             );
-            
+
         }
-        
+
     },
-    
+
     remove(key) {
-        
+
         sessionStorage.removeItem(
             key
         );
-        
+
     }
-    
+
 };
-
-
 
 // =====================================
 // LOGIN CHECK
 // =====================================
 
 OPS.checkIndex = function() {
-    
+
     const index =
         sessionStorage.getItem(
             "index"
         );
-    
-    if (index !== "true") {
-        
-        OPS.go("index");
-        
-        return false;
-        
-    }
-    
-    return true;
-    
-};
 
-// =====================================
-// LOGOUT BUTTON
-// =====================================
+    if (index !== "true") {
+
+        OPS.go("index");
+
+        return false;
+
+    }
+
+    return true;
+
+};
 
 // =====================================
 // LOGOUT
 // =====================================
 
 OPS.logout = function() {
-    
+
     sessionStorage.removeItem(
         "OPS_LOGIN"
     );
-    
+
     sessionStorage.removeItem(
         "index"
     );
-    
+
     OPS.go("index");
-    
+
 };
 
 // =====================================
@@ -354,9 +347,9 @@ OPS.logout = function() {
 // =====================================
 
 OPS.createID = function() {
-    
+
     return Date.now();
-    
+
 };
 
 // =====================================
@@ -364,17 +357,17 @@ OPS.createID = function() {
 // =====================================
 
 OPS.uuid = function() {
-    
+
     return (
-        
+
         Date.now().toString(36) +
-        
+
         Math.random()
         .toString(36)
         .substring(2, 8)
-        
+
     ).toUpperCase();
-    
+
 };
 
 // =====================================
@@ -382,21 +375,21 @@ OPS.uuid = function() {
 // =====================================
 
 OPS.formatDate = function(date = new Date()) {
-    
+
     return new Intl.DateTimeFormat(
         "th-TH",
         {
-            
+
             year: "numeric",
-            
+
             month: "2-digit",
-            
+
             day: "2-digit"
-            
+
         }
-        
+
     ).format(date);
-    
+
 };
 
 // =====================================
@@ -404,21 +397,21 @@ OPS.formatDate = function(date = new Date()) {
 // =====================================
 
 OPS.formatTime = function(date = new Date()) {
-    
+
     return new Intl.DateTimeFormat(
         "th-TH",
         {
-            
+
             hour: "2-digit",
-            
+
             minute: "2-digit",
-            
+
             second: "2-digit"
-            
+
         }
-        
+
     ).format(date);
-    
+
 };
 
 // =====================================
@@ -426,40 +419,37 @@ OPS.formatTime = function(date = new Date()) {
 // =====================================
 
 OPS.dateTime = function() {
-    
+
     return (
-        
+
         OPS.formatDate()
-        
+
         +
-        
+
         " "
-        
+
         +
-        
+
         OPS.formatTime()
-        
+
     );
-    
+
 };
 
 // =====================================
-// VERSION
+// VERSION HELPER
 // =====================================
 
 OPS.version = function() {
-    
+
     console.log(
-        
         "OPS PORTAL",
-        
         OPS.VERSION
-        
     );
-    
+
+    return OPS.VERSION;
+
 };
-
-
 
 // =====================================
 // TOAST
@@ -469,50 +459,50 @@ OPS.toast = function(
     message = "Success",
     duration = 2500
 ) {
-    
+
     const toast =
         document.createElement("div");
-    
+
     toast.className =
         "fixed bottom-6 right-6 bg-black text-white px-5 py-3 rounded-xl shadow-xl z-[9999] opacity-0 transition-opacity duration-300";
-    
+
     toast.textContent =
         message;
-    
+
     document.body.appendChild(
         toast
     );
-    
+
     requestAnimationFrame(() => {
-        
+
         toast.classList.remove(
             "opacity-0"
         );
-        
+
         toast.classList.add(
             "opacity-100"
         );
-        
+
     });
-    
+
     setTimeout(() => {
-        
+
         toast.classList.remove(
             "opacity-100"
         );
-        
+
         toast.classList.add(
             "opacity-0"
         );
-        
+
         setTimeout(() => {
-            
+
             toast.remove();
-            
+
         }, 300);
-        
+
     }, duration);
-    
+
 };
 
 // =====================================
@@ -522,11 +512,11 @@ OPS.toast = function(
 OPS.confirm = function(
     message = "Are you sure?"
 ) {
-    
+
     return window.confirm(
         message
     );
-    
+
 };
 
 // =====================================
@@ -534,42 +524,42 @@ OPS.confirm = function(
 // =====================================
 
 OPS.utils = {
-    
+
     clone(data) {
-        
+
         return JSON.parse(
             JSON.stringify(data)
         );
-        
+
     },
-    
+
     isEmpty(value) {
-        
+
         return (
-            
+
             value === null ||
-            
+
             value === undefined ||
-            
+
             value === ""
-            
+
         );
-        
+
     },
-    
+
     delay(ms = 300) {
-        
+
         return new Promise(resolve => {
-            
+
             setTimeout(
                 resolve,
                 ms
             );
-            
+
         });
-        
+
     }
-    
+
 };
 
 // =====================================
@@ -580,6 +570,10 @@ console.log(
     "OPS CORE READY",
     OPS.VERSION
 );
+
+// =====================================
+// BACKWARD COMPATIBILITY
+// =====================================
 
 // รองรับไฟล์เก่า
 OPS.checkindex = OPS.checkIndex;
