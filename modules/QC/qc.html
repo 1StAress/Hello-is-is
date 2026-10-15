@@ -1,519 +1,281 @@
+
 <!DOCTYPE html>
-
-<html lang="en">
-
+<html lang="th">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
+  <title>QC Operations | OPS Portal</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../../components/style.css">
 
+  <style>
+    #title,
+    #solution,
+    #status,
+    #search-input {
+      width: 100%;
+      border: 1px solid #38bdf8;
+      border-radius: 14px;
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 14px 16px;
+      outline: none;
+    }
 
-<title>
-QC Operations
-</title>
+    #solution {
+      min-height: 120px;
+      resize: vertical;
+    }
 
+    #title:focus,
+    #solution:focus,
+    #status:focus,
+    #search-input:focus {
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 3px rgb(6 182 212 / 15%);
+    }
 
-<script src="https://cdn.tailwindcss.com"></script>
+    #modal {
+      padding: 16px;
+      overflow-y: auto;
+    }
 
+    #modal .ops-card {
+      max-height: calc(100dvh - 32px);
+      overflow-y: auto;
+    }
 
-<link rel="stylesheet" href="../../components/style.css">
+    #qc-list > .ops-card {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
 
+    #qc-list button {
+      cursor: pointer;
+      touch-action: manipulation;
+    }
 
+    #qc-list summary {
+      padding: 12px 0;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding: 16px !important;
+      }
+
+      #qc-list {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
 </head>
 
-
-
-<body>
-
-
-
-<div id="sidebar-container"></div>
-
-
-
-
-
-<header>
-
-
-<div class="
-flex
-items-center
-gap-4
-">
-
-
-<button
-
-id="menu-open"
-
-class="
-w-12
-h-12
-rounded-xl
-bg-cyan-400/20
-text-cyan-300
-flex
-items-center
-justify-center
-hover:scale-110
-transition
-">
-
-
-<svg
-
-width="26"
-
-height="26"
-
-viewBox="0 0 24 24"
-
-fill="none"
-
-stroke="currentColor"
-
-stroke-width="2"
-
-stroke-linecap="round"
-
-stroke-linejoin="round"
-
->
-
-
-<path d="M4 6h16"/>
-
-<path d="M4 12h16"/>
-
-<path d="M4 18h16"/>
-
-
-</svg>
-
-
-</button>
-
-
-
-
-
-<div>
-
-
-<h1 class="
-text-xl
-font-bold
-">
-
-QC Operations
-
-</h1>
-
-
-
-<p class="
-text-sm
-text-slate-300
-">
-
-QC Work Management
-
-</p>
-
-
-
-</div>
-
-
-</div>
-
-
-</header>
-
-
-
-
-
-
-
-<main class="
-max-w-7xl
-mx-auto
-p-6
-space-y-8
-">
-
-
-
-
-
-<section>
-
-
-<div class="
-flex
-justify-between
-items-center
-mb-6
-">
-
-
-
-<div>
-
-
-<h2 class="
-text-3xl
-font-bold
-">
-
-QC Work Log
-
-</h2>
-
-
-
-<p class="
-text-slate-300
-mt-2
-">
-
-บันทึกงานแก้ไขและปัญหา QC
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-<button
-
-id="add-btn"
-
-class="
-dashboard-btn
-bg-cyan-500/80
-text-white
-px-5
-py-3
-">
-
-+ Add Work
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-
-<input
-
-id="search-input"
-
-placeholder="Search Work..."
-
-class="
-w-full
-p-4
-rounded-xl
-mb-6
-"
-
->
-
-
-
-
-
-
-
-<div
-
-id="qc-list"
-
-class="
-grid
-grid-cols-1
-md:grid-cols-2
-xl:grid-cols-3
-gap-6
-">
-
-
-</div>
-
-
-
-
-
-</section>
-
-
-
-
-
-
-</main>
-
-
-
-
-
-
-
-
-
-<div
-
-id="modal"
-
-class="
-hidden
-fixed
-inset-0
-z-50
-bg-black/50
-backdrop-blur
-flex
-items-center
-justify-center
-">
-
-
-
-
-
-
-<div
-
-class="
-ops-card
-w-full
-max-w-lg
-">
-
-
-
-
-
-<h2
-
-class="
-text-xl
-font-bold
-mb-5
-">
-
-QC Work Detail
-
-</h2>
-
-
-
-
-
-
-
-
-
-<select id="title" class="w-full mb-4">
-  <option value="">QC Work</option>
-  <option value="QC 21">QC 21</option>
-  <option value="QC 22">QC 22</option>
-  <option value="QC 23">QC 23</option>
-  <option value="QC 24">QC 24</option>
-  <option value="QC 25">QC 25</option>
-  <option value="QC 26">QC 26</option>
-  <option value="QC 27">QC 27</option>
-  <option value="QC 28">QC 28</option>
-  <option value="QC 29">QC 29</option>
-  <option value="QC 30">QC 30</option>
-  <option value="QC 31">QC 31</option>
-  <option value="QC 32">QC 32</option>
-  <option value="QC 33">QC 33</option>
-  <option value="QC 34">QC 34</option>
-  <option value="QC 35">QC 35</option>
-  <option value="QC 36">QC 36</option>
-  <option value="QC 37">QC 37</option>
-</select>
-
-
-
-
-
-
-
-<textarea
-
-id="solution"
-
-placeholder="Solution"
-
-class="
-w-full
-h-24
-mb-4
-"
-
-></textarea>
-
-
-
-<textarea
-
-id="detail"
-
-placeholder="Problem Detail"
-
-class="
-w-full
-h-24
-mb-4
-"
-
-></textarea>
-
-
-
-
-<select
-
-id="status"
-
-class="
-w-full
-mb-5
-">
-
-
-<option value="Open">
-
-Open
-
-</option>
-
-
-<option value="Process">
-
-Process
-
-</option>
-
-
-<option value="Complete">
-
-Complete
-
-</option>
-
-
-</select>
-
-
-
-
-
-
-
-
-
-<div
-
-class="
-flex
-justify-end
-gap-3
-">
-
-
-
-
-
-<button
-
-id="cancel-btn"
-
-class="
-bg-slate-600
-text-white
-px-4
-py-2
-rounded-xl
-">
-
-Cancel
-
-</button>
-
-
-
-
-
-
-
-<button
-
-id="save-btn"
-
-class="
-bg-cyan-500
-text-white
-px-4
-py-2
-rounded-xl
-">
-
-Save
-
-</button>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-</div>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<script src="../../components/common.js"></script>
-
-<script src="../../components/sidebar.js"></script>
-
-<script src="./qc.js"></script>
-
-
+<body class="min-h-screen">
+
+  <!-- Sidebar -->
+  <div id="sidebar-container"></div>
+
+  <!-- Header -->
+  <header class="px-4 py-5 md:px-6">
+    <div class="flex items-center gap-4">
+
+      <button
+        id="menu-open"
+        type="button"
+        aria-label="Open menu"
+        class="w-12 h-12 shrink-0 rounded-xl bg-cyan-400/20
+               text-cyan-300 flex items-center justify-center
+               hover:scale-105 transition"
+      >
+        <svg
+          width="26"
+          height="26"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M4 6h16"/>
+          <path d="M4 12h16"/>
+          <path d="M4 18h16"/>
+        </svg>
+      </button>
+
+      <div>
+        <h1 class="text-xl font-bold">QC Operations</h1>
+        <p class="text-sm text-slate-300">
+          QC Work Management
+        </p>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-7xl mx-auto p-6 space-y-8">
+
+    <section>
+
+      <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+        <div>
+          <h2 class="text-3xl font-bold">QC Work Log</h2>
+          <p class="text-slate-300 mt-2">
+            บันทึกงานแก้ไขและประวัติการทำงาน QC
+          </p>
+        </div>
+
+        <button
+          id="add-btn"
+          type="button"
+          class="dashboard-btn bg-cyan-500/80 text-white px-5 py-3"
+        >
+          + Add Work
+        </button>
+      </div>
+
+      <!-- Search -->
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Search QC 21–37, Solution, Status..."
+        aria-label="Search QC work"
+        class="mb-6"
+      >
+
+      <!-- QC cards generated by qc.js -->
+      <div
+        id="qc-list"
+        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+      ></div>
+
+    </section>
+
+  </main>
+
+  <!-- Add/Edit Modal -->
+  <div
+    id="modal"
+    class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm
+           items-center justify-center"
+  >
+
+    <div class="ops-card w-full max-w-lg mx-auto">
+
+      <div class="flex items-center justify-between gap-3 mb-6">
+        <h2 class="text-xl font-bold">QC Work Detail</h2>
+
+        <span class="text-xs text-cyan-300">
+          QC 21–37
+        </span>
+      </div>
+
+      <div class="space-y-4">
+
+        <!-- QC Group -->
+        <div>
+          <label
+            for="title"
+            class="block text-sm text-slate-300 mb-2"
+          >
+            QC Work
+          </label>
+
+          <select id="title" required>
+            <option value="" disabled selected>
+              เลือก QC Work
+            </option>
+            <option value="QC 21">QC 21</option>
+            <option value="QC 22">QC 22</option>
+            <option value="QC 23">QC 23</option>
+            <option value="QC 24">QC 24</option>
+            <option value="QC 25">QC 25</option>
+            <option value="QC 26">QC 26</option>
+            <option value="QC 27">QC 27</option>
+            <option value="QC 28">QC 28</option>
+            <option value="QC 29">QC 29</option>
+            <option value="QC 30">QC 30</option>
+            <option value="QC 31">QC 31</option>
+            <option value="QC 32">QC 32</option>
+            <option value="QC 33">QC 33</option>
+            <option value="QC 34">QC 34</option>
+            <option value="QC 35">QC 35</option>
+            <option value="QC 36">QC 36</option>
+            <option value="QC 37">QC 37</option>
+          </select>
+        </div>
+
+        <!-- Solution -->
+        <div>
+          <label
+            for="solution"
+            class="block text-sm text-slate-300 mb-2"
+          >
+            Solution
+          </label>
+
+          <textarea
+            id="solution"
+            placeholder="บันทึกวิธีแก้ไขหรือรายละเอียดงาน..."
+            rows="4"
+          ></textarea>
+        </div>
+
+        <!-- Status -->
+        <div>
+          <label
+            for="status"
+            class="block text-sm text-slate-300 mb-2"
+          >
+            Status
+          </label>
+
+          <select id="status">
+            <option value="Open">Open</option>
+            <option value="Process">Process</option>
+            <option value="Complete">Complete</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Actions -->
+      <div class="flex justify-end gap-3 mt-6">
+
+        <button
+          id="cancel-btn"
+          type="button"
+          class="bg-slate-600 text-white px-5 py-3 rounded-xl"
+        >
+          Cancel
+        </button>
+
+        <button
+          id="save-btn"
+          type="button"
+          class="bg-cyan-500 hover:bg-cyan-400 text-white
+                 px-6 py-3 rounded-xl"
+        >
+          Save
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Shared scripts -->
+  <script src="../../components/common.js"></script>
+  <script src="../../components/sidebar.js"></script>
+
+  <!-- QC Work Log logic -->
+  <script src="./qc.js?v=6"></script>
 
 </body>
-
 </html>
