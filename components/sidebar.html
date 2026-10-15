@@ -1,396 +1,239 @@
-<!-- =====================================
-OPS PORTAL V6
-MODERN FUTURE SIDEBAR
-===================================== -->
-
-
-<div
-id="sidebar-overlay"
-class="
-hidden
-fixed
-inset-0
-bg-black/50
-backdrop-blur-sm
-z-40
-">
-</div>
-
-
-
-<aside
-
-id="sidebar"
-
-class="
-fixed
-top-0
-left-0
-h-full
-w-72
-z-50
--translate-x-full
-transition-transform
-duration-500
-sidebar-future
-">
-
-
-
-<!-- LOGO -->
-
-<div
-class="
-p-6
-border-b
-border-cyan-400/20
-">
-
-
-<div
-class="
-flex
-items-center
-gap-3
-">
-
-
-<div
-class="
-w-12
-h-12
-rounded-2xl
-bg-cyan-400/20
-flex
-items-center
-justify-center
-glow
-">
-
-
-<svg
-viewBox="0 0 24 24"
-fill="none"
-stroke="currentColor"
-stroke-width="2"
-class="w-7 h-7 text-cyan-400">
-
-
-<path d="M12 2L2 7l10 5 10-5-10-5z"/>
-
-<path d="M2 17l10 5 10-5"/>
-
-<path d="M2 12l10 5 10-5"/>
-
-
-</svg>
-
-
-</div>
-
-
-
-<div>
-
-
-<h1
-class="
-text-2xl
-font-bold
-text-white
-">
-
-OPS Portal
-
-</h1>
-
-
-<p
-class="
-text-xs
-text-slate-400
-">
-
-Operation Control Center
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<nav
-class="
-p-5
-space-y-2
-">
-
-
-
-
-
-<!-- DASHBOARD -->
-
-<a
-data-link="dashboard"
-class="
-menu-link
-">
-
-
-<svg viewBox="0 0 24 24">
-
-<path d="M3 13h8V3H3v10zM3 21h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-
-</svg>
-
-
-<span>
-Dashboard
-</span>
-
-
-</a>
-
-
-
-
-
-
-
-<!-- IP -->
-
-
-<a
-data-link="ip"
-class="
-menu-link
-">
-
-
-<svg viewBox="0 0 24 24">
-
-<path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17h-2v-2h2zm2.1-7.25-.9.92A3 3 0 0 0 13 15h-2v-.5a4 4 0 0 1 1.17-2.83l1.24-1.24A1.5 1.5 0 0 0 12.35 8a1.5 1.5 0 0 0-1.5 1.5H9a3.5 3.5 0 1 1 7 0 3.45 3.45 0 0 1-.9 2.25z"/>
-
-</svg>
-
-
-<span>
-IP Management
-</span>
-
-
-</a>
-
-
-
-
-
-
-
-
-<!-- QC -->
-
-
-<a
-data-link="qc"
-class="
-menu-link
-">
-
-
-<svg viewBox="0 0 24 24">
-
-<path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14H7v-2h5zm5-4H7v-2h10zm0-4H7V7h10z"/>
-
-</svg>
-
-
-<span>
-QC Operations
-</span>
-
-
-</a>
-
-
-
-
-
-
-
-
-<!-- PLC -->
-
-
-<a
-data-link="plc"
-class="
-menu-link
-">
-
-
-<svg viewBox="0 0 24 24">
-
-<path d="M19.43 12.98c.04-.32.07-.65.07-.98s-.02-.66-.07-.98l2.11-1.65-2-3.46-2.49 1a7.1 7.1 0 0 0-1.69-.98L15 2h-6l-.37 2.93a7.1 7.1 0 0 0-1.69.98l-2.49-1-2 3.46 2.11 1.65c-.04.32-.07.65-.07.98s.02.66.07.98L4.45 14.63l2 3.46 2.49-1c.52.42 1.09.75 1.69.98L11 21h4l.37-2.93c.6-.24 1.17-.56 1.69-.98l2.49 1 2-3.46-2.12-1.65z"/>
-
-</svg>
-
-
-<span>
-PLC Work
-</span>
-
-
-</a>
-
-
-
-<!-- BACKUP & RESTORE -->
-
-<a
-  data-link="backup"
-  class="menu-link"
->
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M12 3v12m-5-5 5 5 5-5M5 19h14"/>
-  </svg>
-
-  <span>
-    Backup &amp; Restore
-  </span>
-</a>
-
-
-
-
-
-<!-- KNOWLEDGE BUTTON -->
-
-
-<button
-
-id="knowledge-toggle"
-
-class="
-menu-link
-w-full
-">
-
-
-<div
-class="
-flex
-items-center
-gap-4
-">
-
-
-<svg viewBox="0 0 24 24">
-
-<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/>
-
-<path d="M6.5 22H20v-3H6.5a2.5 2.5 0 0 0 0 5z"/>
-
-</svg>
-
-
-<span>
-Knowledge Center
-</span>
-
-
-</div>
-
-
-
-<svg
-id="knowledge-arrow"
-viewBox="0 0 24 24"
-class="arrow">
-
-
-<path d="M6 9l6 6 6-6"/>
-
-
-</svg>
-
-
-</button>
-
-
-
-
-
-
-
-<!-- SUBMENU -->
-
-
-<div
-id="knowledge-menu"
-class="
-hidden
-ml-8
-space-y-2
-submenu
-">
-
-
-<a
-data-link="computer"
-class="sub-link">
-
-Computer
-
-</a>
-
-
-<a
-data-link="camera"
-class="sub-link">
-
-Camera
-
-</a>
-
-
-<a
-data-link="spss"
-class="sub-link">
-
-SPSS
-
-</a>
-
-
-<a
-data-link="cps"
-class="sub-link">
-
-CPS
-
-</a>
-
-
-</div>
-
-
-
-
-
-</nav>
-
-
+<!-- OPS PORTAL SIDEBAR -->
+<div id="sidebar-overlay" class="ops-sidebar-overlay hidden"></div>
+<aside id="sidebar" class="ops-sidebar -translate-x-full">
+  <!-- LOGO -->
+  <div class="ops-sidebar-logo">
+    <div class="ops-logo-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5"></path>
+        <path d="M2 12l10 5 10-5"></path>
+      </svg>
+    </div>
+    <div class="ops-logo-text">
+      <h1>OPS Portal</h1>
+      <p>Operation Control Center</p>
+    </div>
+  </div>
+  <!-- NAVIGATION -->
+  <nav class="ops-sidebar-nav" aria-label="เมนูหลัก">
+    <a data-link="dashboard" class="menu-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 13h8V3H3v10zM3 21h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
+      </svg>
+      <span>Dashboard</span>
+    </a>
+    <a data-link="ip" class="menu-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-1.1 1-1.7 1.5-1.7 3.2M12 17.5v.1"></path>
+      </svg>
+      <span>IP Management</span>
+    </a>
+    <a data-link="qc" class="menu-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+        <path d="M7 7h10M7 11h10M7 15h6"></path>
+      </svg>
+      <span>QC Operations</span>
+    </a>
+    <a data-link="plc" class="menu-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.5-2-3.5-2.4 1a7.5 7.5 0 0 0-1.7-1L15 3H9l-.4 3a7.5 7.5 0 0 0-1.7 1l-2.4-1-2 3.5 2 1.5a7.5 7.5 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a7.5 7.5 0 0 0 1.7 1L9 21h6l.4-3a7.5 7.5 0 0 0 1.7-1l2.4 1 2-3.5z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+      <span>PLC Work</span>
+    </a>
+    <a data-link="backup" class="menu-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3v12m-5-5 5 5 5-5M5 19h14"></path>
+      </svg>
+      <span>Backup &amp; Restore</span>
+    </a>
+    <!-- KNOWLEDGE CENTER -->
+    <button id="knowledge-toggle" class="menu-link ops-knowledge-toggle" type="button" aria-controls="knowledge-menu" aria-expanded="false">
+      <span class="ops-knowledge-label">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"></path>
+          <path d="M6.5 22H20v-3H6.5a2.5 2.5 0 0 0 0 3z"></path>
+        </svg>
+        <span>Knowledge Center</span>
+      </span>
+      <svg id="knowledge-arrow" class="ops-knowledge-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </button>
+    <div id="knowledge-menu" class="hidden ops-submenu">
+      <a data-link="computer" class="sub-link">Computer</a>
+      <a data-link="camera" class="sub-link">Camera</a>
+      <a data-link="spss" class="sub-link">SPSS</a>
+      <a data-link="cps" class="sub-link">CPS</a>
+    </div>
+  </nav>
 </aside>
+<style>
+  /* Sidebar styles are self-contained; no Tailwind dependency. */
+  #sidebar-container .hidden {
+    display: none !important;
+  }
+  #sidebar-container .ops-sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(3px);
+  }
+  #sidebar-container .ops-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    width: min(288px, 86vw);
+    height: 100vh;
+    height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #020f23;
+    border-right: 1px solid rgba(56, 189, 248, 0.25);
+    box-shadow: 15px 0 50px rgba(0, 0, 0, 0.45);
+    transform: translateX(0);
+    transition: transform 0.28s ease;
+    overscroll-behavior: contain;
+  }
+  #sidebar-container .ops-sidebar.-translate-x-full {
+    transform: translateX(-105%);
+    pointer-events: none;
+  }
+  #sidebar-container .ops-sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 0 0 auto;
+    padding: 24px 18px;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+  }
+  #sidebar-container .ops-logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 14px;
+    background: rgba(14, 165, 233, 0.14);
+    color: #38bdf8;
+  }
+  #sidebar-container .ops-logo-icon svg {
+    width: 28px;
+    height: 28px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+  #sidebar-container .ops-logo-text {
+    min-width: 0;
+  }
+  #sidebar-container .ops-logo-text h1 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 22px;
+    line-height: 1.35;
+  }
+  #sidebar-container .ops-logo-text p {
+    margin: 5px 0 0;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  #sidebar-container .ops-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 16px 12px 28px;
+  }
+  #sidebar-container .menu-link,
+  #sidebar-container .sub-link {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    margin: 0;
+    padding: 11px 12px;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: #dbeafe;
+    font: inherit;
+    font-size: 15px;
+    line-height: 1.45;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+    box-shadow: none;
+    transform: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  #sidebar-container .menu-link:hover,
+  #sidebar-container .sub-link:hover {
+    background: rgba(14, 165, 233, 0.16);
+    color: #67e8f9;
+    transform: none;
+  }
+  #sidebar-container .menu-link svg {
+    display: block;
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+  }
+  #sidebar-container .menu-link span {
+    min-width: 0;
+  }
+  #sidebar-container .menu-link.menu-active {
+    border-left: 4px solid #38bdf8;
+    background: rgba(14, 165, 233, 0.24);
+    color: #67e8f9 !important;
+  }
+  #sidebar-container .ops-knowledge-toggle {
+    justify-content: space-between;
+    appearance: none;
+  }
+  #sidebar-container .ops-knowledge-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  #sidebar-container .ops-knowledge-arrow {
+    flex: 0 0 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    transition: transform 0.2s ease;
+  }
+  #sidebar-container .ops-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0 0 5px 20px;
+    padding-left: 10px;
+    border-left: 1px solid rgba(56, 189, 248, 0.2);
+  }
+  #sidebar-container .ops-submenu .sub-link {
+    min-height: 40px;
+    padding: 9px 12px;
+    font-size: 14px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #sidebar-container .ops-sidebar {
+      transition: none;
+    }
+  }
+</style>
