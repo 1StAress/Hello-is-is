@@ -4,70 +4,329 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark">
-  <title>OPS Portal 4.0 | Backup & Restore</title>
+  <title>OPS Portal 4.0 | Backup &amp; Restore</title>
   <link rel="stylesheet" href="./components/style.css">
+
   <style>
-    :root{color-scheme:dark}
-    body{margin:0;background:#07111f;color:#e5edf7;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-    .br-wrap{max-width:1100px;margin:0 auto;padding:28px 18px 56px}
-    .br-panel{background:#0e1b2c;border:1px solid #26364c;border-radius:18px;padding:22px;margin:18px 0}
-    .br-muted{color:#9fb0c6}.br-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-    .br-stat{background:#12243a;border:1px solid #2b405a;border-radius:12px;padding:16px}
-    .br-btn{border:0;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer}
-    .br-primary{background:#06b6d4;color:#04202a}.br-secondary{background:#26384f;color:#e5edf7}
-    .br-danger{background:#b91c1c;color:#fff}.br-btn:disabled{opacity:.45;cursor:not-allowed}
-    .br-file{display:block;width:100%;box-sizing:border-box;background:#07111f;border:1px solid #344860;border-radius:10px;padding:12px;margin:12px 0}
-    .br-status{white-space:pre-wrap;overflow-wrap:anywhere;background:#07111f;border:1px solid #26364c;border-radius:10px;padding:14px;margin-top:14px}
-    .br-warning{border-left:4px solid #f59e0b;padding:12px 14px;background:#33270f;border-radius:8px}
-    .br-good{color:#86efac}.br-bad{color:#fca5a5}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid #26364c;overflow-wrap:anywhere}th{color:#9fb0c6}
-    code{overflow-wrap:anywhere}h1{font-size:clamp(1.7rem,4vw,2.4rem);margin:0 0 8px}
-    @media(max-width:600px){.br-panel{padding:16px}td,th{padding:8px;font-size:.9rem}}
+    .br-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 18px 56px;
+    }
+
+    .br-panel {
+      margin: 18px 0;
+    }
+
+    .br-muted {
+      color: #9fb0c6;
+    }
+
+    .br-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .br-stat {
+      min-width: 0;
+      padding: 16px;
+      border: 1px solid rgba(56,189,248,.2);
+      border-radius: 14px;
+      background: rgba(3,18,35,.65);
+      overflow-wrap: anywhere;
+    }
+
+    .br-btn {
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter .2s, transform .2s;
+    }
+
+    .br-btn:hover:not(:disabled) {
+      filter: brightness(1.12);
+      transform: translateY(-2px);
+    }
+
+    .br-primary {
+      background: #06b6d4;
+      color: #04202a;
+    }
+
+    .br-secondary {
+      background: rgba(38,56,79,.9);
+      color: #e5edf7;
+      border-color: rgba(125,211,252,.2);
+    }
+
+    .br-danger {
+      background: #b91c1c;
+      color: #fff;
+    }
+
+    .br-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .br-file {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      margin: 12px 0;
+      padding: 12px;
+      background: rgba(3,18,35,.8) !important;
+      color: #e5edf7 !important;
+      border: 1px solid #344860 !important;
+      border-radius: 10px !important;
+    }
+
+    .br-check {
+      width: auto !important;
+      flex: 0 0 auto;
+      margin-top: 4px;
+      padding: 0 !important;
+      accent-color: #06b6d4;
+    }
+
+    .br-status {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: rgba(3,18,35,.8);
+      border: 1px solid rgba(56,189,248,.18);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+
+    .br-warning {
+      border-left: 4px solid #f59e0b;
+      padding: 12px 14px;
+      background: rgba(120,77,8,.22);
+      border-radius: 8px;
+    }
+
+    .br-good { color: #86efac; }
+    .br-bad { color: #fca5a5; }
+
+    .br-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .br-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .br-table th,
+    .br-table td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid rgba(125,211,252,.15);
+      overflow-wrap: anywhere;
+    }
+
+    .br-table th {
+      color: #7dd3fc !important;
+    }
+
+    code {
+      overflow-wrap: anywhere;
+    }
+
+    .br-heading {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      margin: 0 0 8px;
+    }
+
+    .br-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+    }
+
+    .br-menu-btn {
+      flex: 0 0 auto;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(14,165,233,.15);
+      color: #7dd3fc;
+      border: 1px solid rgba(56,189,248,.3);
+    }
+
+    .br-menu-btn svg {
+      width: 25px;
+      height: 25px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    @media (max-width: 600px) {
+      .br-panel {
+        padding: 16px;
+      }
+
+      .br-table th,
+      .br-table td {
+        padding: 8px;
+        font-size: .9rem;
+      }
+
+      .br-header {
+        gap: 12px;
+        padding: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .br-btn {
+        transition: none;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div id="sidebar-container"></div>
+
+  <header>
+    <div class="br-header">
+      <button
+        id="menu-open"
+        class="br-menu-btn"
+        type="button"
+        aria-label="เปิดเมนู"
+        aria-controls="sidebar-container"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+
+      <div>
+        <h1 class="br-heading">OPS Portal 4.0</h1>
+        <p class="br-muted">Backup &amp; Restore · Local Data Tools</p>
+      </div>
+    </div>
+  </header>
+
   <main class="br-wrap">
     <p class="br-muted">OPS PORTAL 4.0 · LOCAL DATA TOOLS</p>
-    <h1>Backup &amp; Restore</h1>
-    <p class="br-muted">สำรองและกู้คืนข้อมูลในเบราว์เซอร์เครื่องนี้ โดยไม่ส่งข้อมูลออกไปยังเซิร์ฟเวอร์</p>
+    <h1 class="br-heading">Backup &amp; Restore</h1>
+    <p class="br-muted">
+      สำรองและกู้คืนข้อมูลในเบราว์เซอร์เครื่องนี้ โดยไม่ส่งข้อมูลออกไปยังเซิร์ฟเวอร์
+    </p>
 
-    <section class="br-panel">
+    <section class="ops-card br-panel">
       <h2>สถานะข้อมูลปัจจุบัน</h2>
-      <p class="br-muted">ระบบอ่านค่า Storage ดิบโดยตรง ไม่ใช้ OPS.load() เพื่อไม่ให้ข้อมูล JSON ที่เสียหายถูกเข้าใจผิดว่าเป็นข้อมูลว่าง</p>
+      <p class="br-muted">
+        ระบบอ่านค่า Storage ดิบโดยตรง ไม่ใช้ OPS.load()
+        เพื่อไม่ให้ข้อมูล JSON ที่เสียหายถูกเข้าใจผิดว่าเป็นข้อมูลว่าง
+      </p>
+
       <div id="current-summary" class="br-grid"></div>
-      <div id="current-status" class="br-status" role="status" aria-live="polite">กำลังตรวจสอบข้อมูล...</div>
-      <p class="br-warning">หากพบข้อมูลที่อ่านไม่ได้ ระบบจะหยุดการสำรอง/กู้คืนที่อาจทำให้ข้อมูลสูญหาย และจะไม่แก้ไขคีย์นั้นให้อัตโนมัติ</p>
-      <button id="export-btn" class="br-btn br-primary" type="button">ดาวน์โหลด Backup JSON</button>
+
+      <div
+        id="current-status"
+        class="br-status"
+        role="status"
+        aria-live="polite"
+      >กำลังตรวจสอบข้อมูล...</div>
+
+      <p class="br-warning">
+        หากพบข้อมูลที่อ่านไม่ได้ ระบบจะหยุดการสำรองหรือกู้คืนที่อาจทำให้ข้อมูลสูญหาย
+        และจะไม่แก้ไขคีย์นั้นให้อัตโนมัติ
+      </p>
+
+      <button id="export-btn" class="br-btn br-primary" type="button">
+        ดาวน์โหลด Backup JSON
+      </button>
     </section>
 
-    <section class="br-panel">
+    <section class="ops-card br-panel">
       <h2>ตรวจสอบไฟล์และกู้คืน</h2>
-      <p class="br-muted">เลือกไฟล์ที่สร้างจาก OPS Portal Backup &amp; Restore แล้วตรวจสอบก่อน ระบบไม่เขียนข้อมูลระหว่างขั้น Preview</p>
+      <p class="br-muted">
+        เลือกไฟล์สำรองจาก OPS Portal แล้วตรวจสอบก่อน
+        ระบบจะไม่เขียนข้อมูลระหว่างขั้น Preview
+      </p>
+
       <label for="backup-file">ไฟล์ JSON สำรอง</label>
-      <input id="backup-file" class="br-file" type="file" accept=".json,application/json">
-      <button id="validate-btn" class="br-btn br-secondary" type="button">ตรวจสอบไฟล์และแสดง Preview</button>
+      <input
+        id="backup-file"
+        class="br-file"
+        type="file"
+        accept=".json,application/json"
+      >
+
+      <button id="validate-btn" class="br-btn br-secondary" type="button">
+        ตรวจสอบไฟล์และแสดง Preview
+      </button>
+
       <div id="preview" hidden>
         <h3>Preview ก่อนกู้คืน</h3>
         <div id="preview-summary"></div>
-        <div class="br-warning" style="margin:14px 0">การกู้คืนจะแทนที่ข้อมูลใน Storage Keys ทั้ง 7 รายการด้วยข้อมูลจากไฟล์ หลังจากดาวน์โหลดสำเนาข้อมูลปัจจุบันและยืนยันอีกครั้ง</div>
+
+        <div class="br-warning" style="margin:14px 0">
+          การกู้คืนจะแทนที่ข้อมูลใน Storage Keys ทั้ง 7 รายการด้วยข้อมูลจากไฟล์
+          หลังจากดาวน์โหลดสำเนาข้อมูลปัจจุบันและยืนยันอีกครั้ง
+        </div>
+
         <label style="display:flex;gap:10px;align-items:flex-start;margin:14px 0">
-          <input id="confirm-restore" type="checkbox">
-          <span>ฉันตรวจสอบ Preview แล้ว เข้าใจว่าข้อมูลปัจจุบันจะถูกแทนที่ และต้องการดำเนินการต่อ</span>
+          <input id="confirm-restore" class="br-check" type="checkbox">
+          <span>
+            ฉันตรวจสอบ Preview แล้ว เข้าใจว่าข้อมูลปัจจุบันจะถูกแทนที่
+            และต้องการดำเนินการต่อ
+          </span>
         </label>
-        <button id="restore-btn" class="br-btn br-danger" type="button" disabled>สำรองข้อมูลปัจจุบันและเริ่มกู้คืน</button>
+
+        <button
+          id="restore-btn"
+          class="br-btn br-danger"
+          type="button"
+          disabled
+        >
+          สำรองข้อมูลปัจจุบันและเริ่มกู้คืน
+        </button>
       </div>
-      <div id="restore-status" class="br-status" role="status" aria-live="polite">ยังไม่มีไฟล์ที่ผ่านการตรวจสอบ</div>
+
+      <div
+        id="restore-status"
+        class="br-status"
+        role="status"
+        aria-live="polite"
+      >ยังไม่มีไฟล์ที่ผ่านการตรวจสอบ</div>
     </section>
-    <section class="br-panel">
+
+    <section class="ops-card br-panel">
       <h2>ข้อควรทราบ</h2>
       <ul>
-        <li>ระบบนี้สำรองเฉพาะ 7 Storage Keys ที่ระบุ ไม่ได้สำรอง sessionStorage, รหัสผ่าน, ไฟล์ในเครื่อง หรือการตั้งค่าของเบราว์เซอร์</li>
-        <li>ข้อมูลรูปภาพที่เก็บเป็น Data URL ภายในรายการจะถูกเก็บไว้ตามเดิม</li>
-        <li>การกู้คืนหลายคีย์ไม่ใช่ธุรกรรมแบบ Atomic หากการเขียนล้มเหลว ระบบจะพยายามคืนค่า raw value เดิมทุกคีย์และรายงานผล</li>
+        <li>
+          ระบบนี้สำรองเฉพาะ 7 Storage Keys ที่กำหนด
+          ไม่ได้สำรอง sessionStorage รหัสผ่าน ไฟล์ในเครื่อง
+          หรือการตั้งค่าของเบราว์เซอร์
+        </li>
+        <li>
+          ข้อมูลรูปภาพที่เก็บเป็น Data URL ภายในรายการจะถูกเก็บไว้ตามเดิม
+        </li>
+        <li>
+          การกู้คืนหลายคีย์ไม่ใช่ธุรกรรมแบบ Atomic
+          หากการเขียนล้มเหลว ระบบจะพยายามคืนค่า raw value เดิมทุกคีย์และรายงานผล
+        </li>
         <li>อย่าปิดหน้าเว็บหรือเปิดโมดูลอื่นระหว่างการกู้คืน</li>
       </ul>
     </section>
   </main>
+
   <script src="./components/common.js"></script>
   <script src="./components/sidebar.js"></script>
   <script src="./components/ui.js"></script>
