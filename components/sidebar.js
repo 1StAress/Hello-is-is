@@ -1,19 +1,14 @@
-
 "use strict";
 
-// =====================================
-// OPS PORTAL V4
-// GLOBAL SIDEBAR SYSTEM
-// =====================================
+/* =====================================
+   OPS PORTAL — SIDEBAR NAVIGATION
+   Full-file replacement
+===================================== */
 
 window.Sidebar = window.Sidebar || {};
-
 const Sidebar = window.Sidebar;
 
-// =====================================
-// PATH
-// =====================================
-
+/* BASE PATH */
 Sidebar.getBasePath = function () {
     const path = window.location.pathname;
 
@@ -28,31 +23,13 @@ Sidebar.getBasePath = function () {
     return "./";
 };
 
-// =====================================
-// INITIALIZE
-// =====================================
-
-Sidebar.init = async function () {
-    console.log("OPS SIDEBAR: INITIALIZING");
-
-    await this.load();
-    this.fixLinks();
-    this.bind();
-    this.active();
-
-    console.log("OPS SIDEBAR: READY");
-};
-
-// =====================================
-// LOAD SIDEBAR HTML
-// =====================================
-
+/* LOAD SIDEBAR HTML */
 Sidebar.load = async function () {
     const container = document.getElementById("sidebar-container");
 
     if (!container) {
         console.warn("OPS SIDEBAR: Container not found");
-        return;
+        return false;
     }
 
     const file = this.getBasePath() + "components/sidebar.html";
@@ -63,29 +40,70 @@ Sidebar.load = async function () {
         });
 
         if (!response.ok) {
-            throw new Error(
-                `Sidebar request failed: ${response.status}`
-            );
+            throw new Error("HTTP " + response.status);
         }
 
         container.innerHTML = await response.text();
+        console.log("OPS SIDEBAR: HTML loaded");
 
-        console.log("OPS SIDEBAR: HTML LOADED");
+        return true;
     } catch (error) {
-        console.error("OPS SIDEBAR: LOAD ERROR", error);
+        console.error("OPS SIDEBAR: Load error", error);
+        return false;
     }
 };
 
-// =====================================
-// OPEN / CLOSE / KNOWLEDGE MENU
-// =====================================
+/* ROUTES */
+Sidebar.fixLinks = function () {
+    const base = this.getBasePath();
 
+    const routes = {
+        dashboard: base + "dashboard.html",
+        ip: base + "modules/IP/ip.html",
+        qc: base + "modules/QC/qc.html",
+        plc: base + "modules/PLC/plc.html",
+        backup: base + "backup.html",
+        computer: base + "modules/Knowledge/Computer/computer.html",
+        camera: base + "modules/Knowledge/Camera/camera.html",
+        spss: base + "modules/Knowledge/SPSS/spss.html",
+        cps: base + "modules/Knowledge/CPS/cps.html"
+    };
+
+    document
+        .querySelectorAll("#sidebar-container [data-link]")
+        .forEach(function (link) {
+            const route = link.dataset.link;
+            const destination = routes[route];
+
+            if (!destination) {
+                console.warn(
+                    "OPS SIDEBAR: Unknown route",
+                    route
+                );
+                return;
+            }
+
+            link.setAttribute("href", destination);
+            link.setAttribute("data-route-ready", "true");
+        });
+};
+
+/* SIDEBAR OPEN / CLOSE AND SUBMENU */
 Sidebar.bind = function () {
     const openButton = document.getElementById("menu-open");
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("sidebar-overlay");
 
-    // OPEN SIDEBAR
+    function closeSidebar() {
+        if (sidebar) {
+            sidebar.classList.add("-translate-x-full");
+        }
+
+        if (overlay) {
+            overlay.classList.add("hidden");
+        }
+    }
+
     if (openButton && sidebar) {
         openButton.onclick = function () {
             sidebar.classList.remove("-translate-x-full");
@@ -96,15 +114,31 @@ Sidebar.bind = function () {
         };
     }
 
-    // CLOSE SIDEBAR
-    if (overlay && sidebar) {
-        overlay.onclick = function () {
-            sidebar.classList.add("-translate-x-full");
-            overlay.classList.add("hidden");
-        };
+    if (overlay) {
+        overlay.onclick = closeSidebar;
     }
 
-    // KNOWLEDGE CENTER TOGGLE
+    document
+        .querySelectorAll("#sidebar-container a[data-link]")
+        .forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                const href = link.getAttribute("href");
+
+                if (!href || href === "#") {
+                    event.preventDefault();
+
+                    console.error(
+                        "OPS SIDEBAR: Missing destination",
+                        link.dataset.link
+                    );
+
+                    return;
+                }
+
+                closeSidebar();
+            });
+        });
+
     const knowledgeToggle =
         document.getElementById("knowledge-toggle");
 
@@ -128,87 +162,71 @@ Sidebar.bind = function () {
     }
 };
 
-// =====================================
-// ROUTE MANAGEMENT
-// =====================================
-
-Sidebar.fixLinks = function () {
-    const base = this.getBasePath();
-
-    const routes = {
-        dashboard: base + "dashboard.html",
-
-        ip: base + "modules/IP/ip.html",
-
-        qc: base + "modules/QC/qc.html",
-
-        plc: base + "modules/PLC/plc.html",
-
-        // BACKUP & RESTORE
-        backup: base + "backup.html",
-
-        // KNOWLEDGE CENTER
-        computer:
-            base + "modules/Knowledge/Computer/computer.html",
-
-        camera:
-            base + "modules/Knowledge/Camera/camera.html",
-
-        spss:
-            base + "modules/Knowledge/SPSS/spss.html",
-
-        cps:
-            base + "modules/Knowledge/CPS/cps.html"
-    };
-
-    document.querySelectorAll("[data-link]").forEach(function (link) {
-        const type = link.dataset.link;
-        const destination = routes[type];
-
-        if (destination) {
-            link.href = destination;
-        } else {
-            console.warn(
-                "OPS SIDEBAR: Unknown route",
-                type
-            );
-        }
-    });
-};
-
-// =====================================
-// ACTIVE MENU
-// =====================================
-
+/* ACTIVE MENU */
 Sidebar.active = function () {
     const currentPath = window.location.pathname;
 
-    document.querySelectorAll(".menu-link").forEach(function (link) {
-        link.classList.remove("menu-active");
+    document
+        .querySelectorAll(
+            "#sidebar-container .menu-link, " +
+            "#sidebar-container .sub-link"
+        )
+        .forEach(function (link) {
+            link.classList.remove("menu-active");
 
-        if (!link.href) {
-            return;
-        }
+            const href = link.getAttribute("href");
 
-        try {
-            const linkPath = new URL(link.href).pathname;
-
-            if (linkPath === currentPath) {
-                link.classList.add("menu-active");
+            if (!href) {
+                return;
             }
-        } catch (error) {
-            console.warn(
-                "OPS SIDEBAR: Invalid menu URL",
-                link.href
-            );
-        }
-    });
+
+            try {
+                const linkPath = new URL(
+                    href,
+                    window.location.href
+                ).pathname;
+
+                if (linkPath === currentPath) {
+                    link.classList.add("menu-active");
+                }
+            } catch (error) {
+                console.warn(
+                    "OPS SIDEBAR: Invalid URL",
+                    href,
+                    error
+                );
+            }
+        });
 };
 
-// =====================================
-// START
-// =====================================
+/* INITIALIZE */
+Sidebar.init = async function () {
+    console.log("OPS SIDEBAR: Initializing");
 
-document.addEventListener("DOMContentLoaded", function () {
+    const loaded = await this.load();
+
+    if (!loaded) {
+        return;
+    }
+
+    this.fixLinks();
+    this.bind();
+    this.active();
+
+    console.log("OPS SIDEBAR: Ready");
+};
+
+/* START WHEN DOM IS READY */
+function startOpsSidebar() {
     Sidebar.init();
-});
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener(
+        "DOMContentLoaded",
+        startOpsSidebar,
+        { once: true }
+    );
+} else {
+    startOpsSidebar();
+}
