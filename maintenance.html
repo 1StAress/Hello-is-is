@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#020817">
+    <title>Maintenance | OPS Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./components/style.css">
+    <style>
+        .mission-input {
+            display: block;
+            width: 100%;
+            margin-top: 7px;
+        }
+        .mission-card {
+            border: 1px solid rgba(56,189,248,.2);
+            border-radius: 16px;
+            background: rgba(3,18,35,.8);
+            padding: 18px;
+            min-width: 0;
+        }
+        .mission-button {
+            border: 1px solid rgba(125,211,252,.25);
+            border-radius: 10px;
+            padding: 9px 13px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .mission-button:hover { filter: brightness(1.2); }
+        .mission-button:disabled { opacity: .5; }
+        .mission-status {
+            border-radius: 999px;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .mission-detail {
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+        #maintenance-message { min-height: 24px; }
+    </style>
+</head>
+<body>
+    <div id="sidebar-container"></div>
+
+    <header class="sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <button id="menu-open"
+                    type="button"
+                    class="w-11 h-11 rounded-xl bg-cyan-400/20 text-cyan-300"
+                    aria-label="เปิดเมนู">
+                    <svg width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold">Maintenance</h1>
+                    <p class="text-xs md:text-sm text-slate-300">Work Order Management</p>
+                </div>
+            </div>
+            <button id="maintenance-dashboard"
+                type="button"
+                class="mission-button bg-cyan-500/20 text-cyan-200">
+                Dashboard
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
+        <section class="hero-panel rounded-3xl p-6 md:p-8">
+            <p class="text-cyan-200 text-sm font-semibold">OPS PORTAL / OPERATIONS</p>
+            <h2 class="text-3xl md:text-4xl font-bold mt-3">Maintenance Mission Board</h2>
+            <p class="mt-3 text-slate-200">
+                บันทึก ติดตาม และจัดการงานซ่อมในหน้าเดียว
+            </p>
+        </section>
+
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="ops-card">
+                <p class="text-sm text-slate-300">งานทั้งหมด</p>
+                <p id="count-total" class="text-3xl font-bold mt-2">0</p>
+            </div>
+            <div class="ops-card">
+                <p class="text-sm text-slate-300">งานเปิดใหม่</p>
+                <p id="count-open" class="text-3xl font-bold mt-2 text-cyan-300">0</p>
+            </div>
+            <div class="ops-card">
+                <p class="text-sm text-slate-300">กำลังดำเนินการ</p>
+                <p id="count-progress" class="text-3xl font-bold mt-2 text-amber-300">0</p>
+            </div>
+            <div class="ops-card">
+                <p class="text-sm text-slate-300">เสร็จแล้ว</p>
+                <p id="count-completed" class="text-3xl font-bold mt-2 text-emerald-300">0</p>
+            </div>
+        </section>
+
+        <section class="ops-card">
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
+                <div>
+                    <h2 class="text-xl font-bold">บันทึกงานซ่อม</h2>
+                    <p class="text-sm text-slate-300 mt-1">ช่องที่มีเครื่องหมาย * จำเป็นต้องกรอก</p>
+                </div>
+                <button id="mission-reset"
+                    type="button"
+                    class="mission-button bg-slate-700/60 text-slate-100">
+                    ล้างแบบฟอร์ม
+                </button>
+            </div>
+
+            <form id="mission-form" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <label>
+                    <span>Machine / ชื่อเครื่อง *</span>
+                    <input class="mission-input" id="mission-machine"
+                        name="machine" maxlength="150" required
+                        placeholder="เช่น Conveyor Line 01">
+                </label>
+
+                <label>
+                    <span>Assignee / ผู้รับผิดชอบ *</span>
+                    <input class="mission-input" id="mission-assignee"
+                        name="assignee" maxlength="150" required
+                        placeholder="ชื่อผู้รับผิดชอบ">
+                </label>
+
+                <label class="md:col-span-2">
+                    <span>Symptom / อาการเสีย *</span>
+                    <textarea class="mission-input" id="mission-symptom"
+                        name="symptom" rows="3" maxlength="3000" required
+                        placeholder="อธิบายอาการเสียหรือ Error ที่พบ"></textarea>
+                </label>
+
+                <label>
+                    <span>Status / สถานะ</span>
+                    <select class="mission-input" id="mission-status" name="status">
+                        <option value="Open">Open — เปิดงาน</option>
+                        <option value="In Progress">In Progress — กำลังดำเนินการ</option>
+                        <option value="On Hold">On Hold — พักงาน</option>
+                        <option value="Completed">Completed — เสร็จแล้ว</option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>Parts / อะไหล่หรือหมายเหตุ</span>
+                    <input class="mission-input" id="mission-parts"
+                        name="parts" maxlength="1000"
+                        placeholder="อะไหล่ที่ใช้ หรือหมายเหตุเพิ่มเติม">
+                </label>
+
+                <div class="md:col-span-2 flex flex-wrap gap-3">
+                    <button id="mission-save"
+                        type="submit"
+                        class="mission-button bg-cyan-500 text-slate-950">
+                        + เพิ่มงานซ่อม
+                    </button>
+                    <button id="mission-cancel"
+                        type="button"
+                        class="mission-button bg-slate-700 text-white hidden">
+                        ยกเลิกการแก้ไข
+                    </button>
+                </div>
+            </form>
+
+            <p id="maintenance-message"
+                class="text-sm mt-4"
+                role="status"
+                aria-live="polite"></p>
+        </section>
+
+        <section class="ops-card">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-5">
+                <div>
+                    <h2 class="text-xl font-bold">รายการงานซ่อม</h2>
+                    <p id="mission-result-count" class="text-sm text-slate-300 mt-1">
+                        กำลังโหลดรายการ...
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:min-w-[50%]">
+                    <input id="mission-search" type="search"
+                        placeholder="ค้นหาเครื่อง อาการ ผู้รับผิดชอบ..."
+                        aria-label="ค้นหางานซ่อม">
+                    <select id="mission-filter" aria-label="กรองตามสถานะ">
+                        <option value="All">ทุกสถานะ</option>
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="mission-list" class="space-y-4">
+                <div class="mission-card text-center text-slate-400">
+                    กำลังโหลดรายการงานซ่อม...
+                </div>
+            </div>
+        </section>
+
+        <p class="text-xs text-slate-400 text-center pb-6">
+            OPS Portal V4 · Maintenance module · Local device storage
+        </p>
+    </main>
+
+    <script src="./components/common.js"></script>
+    <script src="./components/sidebar.js"></script>
+    <script src="./maintenance.js"></script>
+</body>
+</html>
