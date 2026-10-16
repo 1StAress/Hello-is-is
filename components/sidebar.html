@@ -1,7 +1,6 @@
 <!-- OPS PORTAL SIDEBAR -->
 <div id="sidebar-overlay" class="ops-sidebar-overlay hidden"></div>
 <aside id="sidebar" class="ops-sidebar -translate-x-full">
-  <!-- LOGO -->
   <div class="ops-sidebar-logo">
     <div class="ops-logo-icon" aria-hidden="true">
       <svg viewBox="0 0 24 24">
@@ -15,7 +14,6 @@
       <p>Operation Control Center</p>
     </div>
   </div>
-  <!-- NAVIGATION -->
   <nav class="ops-sidebar-nav" aria-label="เมนูหลัก">
     <a data-link="dashboard" class="menu-link">
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -44,14 +42,29 @@
       </svg>
       <span>PLC Work</span>
     </a>
+    <a
+      data-link="maintenance"
+      class="menu-link"
+      href="/Hello-is-is/maintenance.html"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4L14 13l-3-3 3.7-3.7z"></path>
+      </svg>
+      <span>Maintenance</span>
+    </a>
     <a data-link="backup" class="menu-link">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 3v12m-5-5 5 5 5-5M5 19h14"></path>
       </svg>
       <span>Backup &amp; Restore</span>
     </a>
-    <!-- KNOWLEDGE CENTER -->
-    <button id="knowledge-toggle" class="menu-link ops-knowledge-toggle" type="button" aria-controls="knowledge-menu" aria-expanded="false">
+    <button
+      id="knowledge-toggle"
+      class="menu-link ops-knowledge-toggle"
+      type="button"
+      aria-controls="knowledge-menu"
+      aria-expanded="false"
+    >
       <span class="ops-knowledge-label">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"></path>
@@ -72,7 +85,6 @@
   </nav>
 </aside>
 <style>
-  /* Sidebar styles are self-contained; no Tailwind dependency. */
   #sidebar-container .hidden {
     display: none !important;
   }
