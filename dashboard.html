@@ -3,216 +3,684 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OPS Portal Dashboard</title>
+<meta name="theme-color" content="#020617">
+<title>OPS Portal | Command Center</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="./components/style.css">
+
+<style>
+:root {
+    color-scheme: dark;
+    --ops-bg: #020617;
+    --ops-panel: rgba(9, 22, 43, .82);
+    --ops-border: rgba(56, 189, 248, .2);
+    --ops-cyan: #22d3ee;
+    --ops-blue: #3b82f6;
+    --ops-muted: #94a3b8;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    color: #e2e8f0;
+    background:
+        radial-gradient(ellipse at 15% 0%, rgba(8,145,178,.16), transparent 38%),
+        radial-gradient(ellipse at 95% 15%, rgba(37,99,235,.13), transparent 34%),
+        var(--ops-bg);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .18;
+    background-image:
+        linear-gradient(rgba(56,189,248,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: linear-gradient(to bottom, black, transparent 85%);
+}
+
+header {
+    background: rgba(2, 6, 23, .76);
+    border-bottom: 1px solid rgba(56,189,248,.14);
+    backdrop-filter: blur(18px);
+}
+
+.ops-brand-mark {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(34,211,238,.4);
+    border-radius: 14px;
+    color: var(--ops-cyan);
+    background: linear-gradient(135deg,rgba(34,211,238,.16),rgba(59,130,246,.1));
+    box-shadow: 0 0 28px rgba(34,211,238,.1);
+}
+
+.ops-eyebrow {
+    color: var(--ops-cyan);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+.ops-panel {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--ops-border);
+    border-radius: 20px;
+    background: linear-gradient(145deg,rgba(15,31,55,.92),rgba(3,12,27,.92));
+    box-shadow: 0 16px 45px rgba(0,0,0,.17);
+    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.ops-panel:hover {
+    border-color: rgba(34,211,238,.4);
+    box-shadow: 0 16px 45px rgba(0,0,0,.22), 0 0 24px rgba(34,211,238,.04);
+}
+
+.ops-hero {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(34,211,238,.25);
+    border-radius: 28px;
+    background:
+        radial-gradient(ellipse at 85% 20%,rgba(14,165,233,.19),transparent 40%),
+        linear-gradient(120deg,rgba(8,24,47,.98),rgba(4,12,28,.96));
+    box-shadow: 0 20px 65px rgba(0,0,0,.24);
+}
+
+.ops-hero::after {
+    content: "";
+    position: absolute;
+    top: -80px;
+    right: -70px;
+    width: 280px;
+    height: 280px;
+    border: 1px solid rgba(34,211,238,.15);
+    border-radius: 50%;
+    box-shadow: 0 0 0 28px rgba(34,211,238,.025),
+                0 0 0 58px rgba(34,211,238,.02);
+    pointer-events: none;
+}
+
+.ops-online-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 12px rgba(52,211,153,.8);
+    animation: ops-pulse 2s infinite;
+}
+
+.ops-live-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(52,211,153,.25);
+    border-radius: 999px;
+    padding: 7px 11px;
+    background: rgba(16,185,129,.07);
+    color: #a7f3d0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+}
+
+.ops-card {
+    border: 1px solid var(--ops-border) !important;
+    background: var(--ops-panel) !important;
+    backdrop-filter: blur(12px);
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.ops-card:hover {
+    border-color: rgba(34,211,238,.4) !important;
+}
+
+.icon-box {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(34,211,238,.23);
+    border-radius: 14px;
+    background: rgba(8,145,178,.12);
+    color: #67e8f9;
+}
+
+.icon-box svg {
+    width: 23px;
+    height: 23px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+}
+
+.ops-stat-number {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.04em;
+}
+
+.ops-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ops-section-heading::before {
+    content: "";
+    width: 4px;
+    height: 24px;
+    border-radius: 8px;
+    background: var(--ops-cyan);
+    box-shadow: 0 0 12px rgba(34,211,238,.45);
+}
+
+.ops-quick-card {
+    min-height: 170px;
+    cursor: pointer;
+}
+
+.ops-quick-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0,0,0,.22);
+}
+
+.ops-mini-label {
+    color: var(--ops-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.ops-divider {
+    height: 1px;
+    background: linear-gradient(90deg,rgba(34,211,238,.3),rgba(34,211,238,0));
+}
+
+.ops-scanline {
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg,transparent,rgba(34,211,238,.55),transparent);
+    opacity: .5;
+    animation: ops-scan 5s linear infinite;
+}
+
+.ops-terminal {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: #a5f3fc;
+}
+
+.ops-terminal-line {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(148,163,184,.08);
+}
+
+.ops-terminal-line:last-child {
+    border-bottom: 0;
+}
+
+.ops-terminal-line span:first-child {
+    color: #34d399;
+}
+
+#ops-maintenance-board {
+    display: none !important;
+}
+
+#knowledge-popup {
+    background: rgba(2,6,23,.82);
+}
+
+#knowledge-popup .ops-card {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+button:focus-visible,
+a:focus-visible,
+[onclick]:focus-visible {
+    outline: 2px solid var(--ops-cyan);
+    outline-offset: 3px;
+}
+
+@keyframes ops-pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: .45; }
+}
+
+@keyframes ops-scan {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+@media (max-width: 640px) {
+    main {
+        padding: 16px !important;
+    }
+
+    .ops-hero {
+        border-radius: 20px;
+    }
+
+    #username-display {
+        font-size: 2.5rem !important;
+        overflow-wrap: anywhere;
+    }
+
+    #clock {
+        font-size: 2.25rem !important;
+    }
+}
+</style>
 </head>
+
 <body>
 <!-- SIDEBAR -->
 <div id="sidebar-container"></div>
+
 <!-- HEADER -->
 <header class="sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3 sm:gap-4 min-w-0">
             <button id="menu-open"
-                class="w-12 h-12 rounded-xl bg-cyan-400/20 text-cyan-300 flex items-center justify-center shadow-lg hover:scale-110 transition">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                aria-label="Open navigation menu"
+                class="w-11 h-11 rounded-xl bg-cyan-400/10 text-cyan-300 border border-cyan-400/20 flex items-center justify-center hover:bg-cyan-400/20 transition">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2">
                     <path d="M4 6h16"/>
                     <path d="M4 12h16"/>
                     <path d="M4 18h16"/>
                 </svg>
             </button>
-            <div>
-                <h1 class="text-2xl font-bold">OPS Portal</h1>
-                <p class="text-sm text-slate-300">Operation Management System</p>
+            <div class="ops-brand-mark hidden sm:grid">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.7">
+                    <path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z"/>
+                    <path d="m3 7 9 5 9-5M12 12v10"/>
+                </svg>
+            </div>
+            <div class="min-w-0">
+                <h1 class="text-xl sm:text-2xl font-bold tracking-tight">OPS Portal</h1>
+                <p class="text-xs text-slate-400 tracking-wide">INDUSTRIAL COMMAND CENTER</p>
             </div>
         </div>
+
         <button id="logout-btn"
-            class="px-5 py-2 rounded-xl bg-red-500/80 text-white hover:bg-red-600 transition shadow-lg">
+            class="px-3 sm:px-5 py-2 rounded-xl bg-red-500/10 border border-red-400/20 text-red-200 hover:bg-red-500/20 transition text-sm font-semibold">
             Logout
         </button>
     </div>
+    <div class="ops-scanline"></div>
 </header>
+
 <!-- MAIN -->
-<main class="max-w-7xl mx-auto p-6 space-y-10">
+<main class="max-w-7xl mx-auto p-4 sm:p-6 space-y-8 sm:space-y-10">
+
     <!-- HERO -->
-    <section class="rounded-3xl p-8 shadow-xl hero-panel">
-        <div class="flex flex-col lg:flex-row justify-between gap-8">
-            <div>
-                <p id="greeting" class="text-lg opacity-90">Good Morning</p>
-                <h2 id="username-display" class="text-5xl font-bold mt-2">User</h2>
-                <p class="mt-4 text-white/90">
+    <section class="ops-hero p-6 sm:p-8 lg:p-10">
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+            <div class="min-w-0">
+                <div class="ops-eyebrow mb-4">Operations / Overview</div>
+                <div class="ops-live-chip mb-5">
+                    <span class="ops-online-dot"></span>
+                    COMMAND CENTER ONLINE
+                </div>
+                <p id="greeting" class="text-base sm:text-lg text-slate-300">Good Morning</p>
+                <h2 id="username-display" class="text-4xl sm:text-5xl lg:text-6xl font-bold mt-2 tracking-tight">User</h2>
+                <p class="mt-4 text-slate-400 max-w-xl leading-relaxed">
                     Welcome back to Operations Control Center.
+                    Monitor your modules and access technical tools from one place.
                 </p>
             </div>
-            <div class="text-right">
-                <div id="clock" class="text-5xl font-bold">00:00:00</div>
-                <div id="today" class="mt-3 text-white/80">
-                    Friday, 17 July 2026
+
+            <div class="lg:text-right shrink-0">
+                <div class="ops-eyebrow mb-3">Local System Time</div>
+                <div id="clock" class="text-4xl sm:text-5xl font-bold tracking-tight tabular-nums">00:00:00</div>
+                <div id="today" class="mt-3 text-sm text-slate-400">Loading date...</div>
+                <div class="mt-5 flex lg:justify-end items-center gap-2 text-xs text-slate-500">
+                    <span class="ops-online-dot"></span>
+                    Dashboard session active
                 </div>
             </div>
         </div>
     </section>
+
     <!-- SYSTEM OVERVIEW -->
     <section>
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            <div class="ops-card">
-                <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-lg">System Status</h3>
-                    <div class="status-online text-green-300 flex items-center gap-2">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                            <circle cx="12" cy="12" r="10"/>
-                        </svg>
-                        Healthy
-                    </div>
+        <div class="flex flex-wrap items-end justify-between gap-3 mb-5">
+            <div>
+                <div class="ops-eyebrow mb-2">System telemetry</div>
+                <h2 class="ops-section-heading text-xl sm:text-2xl font-bold">System Overview</h2>
+            </div>
+            <span class="text-xs text-slate-500">OPS CORE / V4.0.0</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div class="ops-card rounded-2xl p-5">
+                <div class="flex justify-between items-center gap-3">
+                    <h3 class="font-bold">System Status</h3>
+                    <span class="ops-online-dot"></span>
                 </div>
-                <p class="mt-3 text-slate-300">All services are running normally.</p>
+                <p class="text-2xl font-bold text-emerald-300 mt-4">Healthy</p>
+                <p class="text-sm text-slate-400 mt-2">Core interface available</p>
+                <div class="ops-divider mt-5"></div>
+                <p class="ops-mini-label mt-3">STATUS / NOMINAL</p>
             </div>
-            <div class="ops-card">
-                <h3 class="font-bold text-lg">Version</h3>
-                <p class="text-4xl font-bold mt-4">4.0.0</p>
-                <p class="text-slate-300">OPS Portal</p>
+
+            <div class="ops-card rounded-2xl p-5">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold">Platform Version</h3>
+                    <span class="text-cyan-300 text-xs">CORE</span>
+                </div>
+                <p class="text-3xl font-bold mt-4">4.0.0</p>
+                <p class="text-sm text-slate-400 mt-2">OPS Portal</p>
+                <div class="ops-divider mt-5"></div>
+                <p class="ops-mini-label mt-3">RELEASE / V4</p>
             </div>
-            <div class="ops-card">
-                <h3 class="font-bold text-lg">Storage</h3>
-                <p id="storage-status" class="text-4xl font-bold mt-4">Ready</p>
-                <p class="text-slate-300">Local Storage</p>
+
+            <div class="ops-card rounded-2xl p-5">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold">Storage</h3>
+                    <span class="text-cyan-300 text-xs">LOCAL</span>
+                </div>
+                <p id="storage-status" class="text-3xl font-bold mt-4">Ready</p>
+                <p class="text-sm text-slate-400 mt-2">Browser Local Storage</p>
+                <div class="ops-divider mt-5"></div>
+                <p class="ops-mini-label mt-3">PERSISTENCE / ENABLED</p>
             </div>
-            <div class="ops-card">
-                <h3 class="font-bold text-lg">Modules</h3>
-                <p id="module-count" class="text-4xl font-bold mt-4">7</p>
-                <p class="text-slate-300">Active Modules</p>
+
+            <div class="ops-card rounded-2xl p-5">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold">Modules</h3>
+                    <span class="text-cyan-300 text-xs">INDEX</span>
+                </div>
+                <p id="module-count" class="text-3xl font-bold mt-4">7</p>
+                <p class="text-sm text-slate-400 mt-2">Active Modules</p>
+                <div class="ops-divider mt-5"></div>
+                <p class="ops-mini-label mt-3">MODULE DIRECTORY</p>
             </div>
         </div>
     </section>
+
     <!-- STATISTICS -->
     <section>
-        <h2 class="text-2xl font-bold mb-6">Statistics</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div class="ops-card">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 6h16v12H4z"/>
-                    </svg>
+        <div class="ops-eyebrow mb-2">Operational data</div>
+        <h2 class="ops-section-heading text-xl sm:text-2xl font-bold mb-5">Module Statistics</h2>
+
+        <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div class="ops-card rounded-2xl p-5">
+                <div class="flex justify-between items-start gap-2">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 6h16v12H4z"/>
+                            <path d="M8 10h8M8 14h5"/>
+                        </svg>
+                    </div>
+                    <span class="ops-mini-label">NET</span>
                 </div>
-                <h3 class="mt-4 font-bold">IP</h3>
-                <p id="stat-ip" class="text-4xl font-bold mt-3">0</p>
+                <h3 class="mt-5 font-bold text-slate-300">IP Management</h3>
+                <p id="stat-ip" class="ops-stat-number text-4xl font-bold mt-3">0</p>
+                <p class="text-xs text-slate-500 mt-2">Network records</p>
             </div>
-            <div class="ops-card">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M9 2h6v4H9z"/>
-                        <path d="M5 6h14v16H5z"/>
-                    </svg>
+
+            <div class="ops-card rounded-2xl p-5">
+                <div class="flex justify-between items-start gap-2">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 2h6v4H9z"/>
+                            <path d="M5 6h14v16H5z"/>
+                            <path d="m8 13 2.5 2.5L16 10"/>
+                        </svg>
+                    </div>
+                    <span class="ops-mini-label">QC</span>
                 </div>
-                <h3 class="mt-4 font-bold">QC</h3>
-                <p id="stat-qc" class="text-4xl font-bold mt-3">0</p>
+                <h3 class="mt-5 font-bold text-slate-300">QC Operations</h3>
+                <p id="stat-qc" class="ops-stat-number text-4xl font-bold mt-3">0</p>
+                <p class="text-xs text-slate-500 mt-2">Quality records</p>
             </div>
-            <div class="ops-card">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/>
-                    </svg>
+
+            <div class="ops-card rounded-2xl p-5">
+                <div class="flex justify-between items-start gap-2">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/>
+                            <path d="M9 12h6M12 9v6"/>
+                        </svg>
+                    </div>
+                    <span class="ops-mini-label">PLC</span>
                 </div>
-                <h3 class="mt-4 font-bold">PLC</h3>
-                <p id="stat-plc" class="text-4xl font-bold mt-3">0</p>
+                <h3 class="mt-5 font-bold text-slate-300">PLC Work</h3>
+                <p id="stat-plc" class="ops-stat-number text-4xl font-bold mt-3">0</p>
+                <p class="text-xs text-slate-500 mt-2">Control records</p>
             </div>
-            <div class="ops-card">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 3h16v18H4z"/>
-                        <path d="M8 7h8"/>
-                        <path d="M8 11h8"/>
-                        <path d="M8 15h5"/>
-                    </svg>
+
+            <div class="ops-card rounded-2xl p-5">
+                <div class="flex justify-between items-start gap-2">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 3h16v18H4z"/>
+                            <path d="M8 7h8M8 11h8M8 15h5"/>
+                        </svg>
+                    </div>
+                    <span class="ops-mini-label">KB</span>
                 </div>
-                <h3 class="mt-4 font-bold">Knowledge</h3>
-                <p id="stat-knowledge" class="text-4xl font-bold mt-3">0</p>
+                <h3 class="mt-5 font-bold text-slate-300">Knowledge</h3>
+                <p id="stat-knowledge" class="ops-stat-number text-4xl font-bold mt-3">0</p>
+                <p class="text-xs text-slate-500 mt-2">Knowledge records</p>
             </div>
         </div>
     </section>
+
     <!-- QUICK ACTION -->
     <section>
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold">Quick Action</h2>
+        <div class="flex flex-wrap items-end justify-between gap-3 mb-5">
+            <div>
+                <div class="ops-eyebrow mb-2">Direct access</div>
+                <h2 class="ops-section-heading text-xl sm:text-2xl font-bold">Quick Actions</h2>
+            </div>
+            <p class="text-xs text-slate-500">SELECT A MODULE TO CONTINUE</p>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <!-- IP -->
-            <div onclick="OPS.go('ip')" class="ops-card cursor-pointer">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M2 12h20"/>
-                        <path d="M12 2c3 3 3 17 0 20"/>
-                    </svg>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div onclick="OPS.go('ip')" role="button" tabindex="0"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();OPS.go('ip')}"
+                class="ops-card ops-quick-card rounded-2xl p-5">
+                <div class="flex justify-between items-start">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M2 12h20M12 2c3 3 3 17 0 20"/>
+                        </svg>
+                    </div>
+                    <span class="text-cyan-300 text-xs">01 / NET</span>
                 </div>
                 <h3 class="font-bold mt-5">IP Management</h3>
-                <p class="text-slate-300 mt-2">Network Control</p>
+                <p class="text-sm text-slate-400 mt-2">Network Control</p>
+                <div class="ops-divider mt-5"></div>
+                <p class="text-xs text-cyan-200 mt-3">Open module ↗</p>
             </div>
-            <!-- QC -->
-            <div onclick="OPS.go('qc')" class="ops-card cursor-pointer">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M14 2l8 8"/>
-                        <path d="M6 18l12-12"/>
-                        <path d="M3 21l3-3"/>
-                    </svg>
+
+            <div onclick="OPS.go('qc')" role="button" tabindex="0"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();OPS.go('qc')}"
+                class="ops-card ops-quick-card rounded-2xl p-5">
+                <div class="flex justify-between items-start">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M14 2l8 8M6 18l12-12M3 21l3-3"/>
+                            <path d="M4 7h5M6.5 4.5v5"/>
+                        </svg>
+                    </div>
+                    <span class="text-cyan-300 text-xs">02 / QC</span>
                 </div>
                 <h3 class="font-bold mt-5">QC Operations</h3>
-                <p class="text-slate-300 mt-2">Work Log</p>
+                <p class="text-sm text-slate-400 mt-2">Quality Work Log</p>
+                <div class="ops-divider mt-5"></div>
+                <p class="text-xs text-cyan-200 mt-3">Open module ↗</p>
             </div>
-            <!-- PLC -->
-            <div onclick="OPS.go('plc')" class="ops-card cursor-pointer">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.8 1.8 0 0 0 .3 2l.1.1-2 3.4-.2-.1a1.8 1.8 0 0 0-2-.2"/>
-                    </svg>
+
+            <div onclick="OPS.go('plc')" role="button" tabindex="0"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();OPS.go('plc')}"
+                class="ops-card ops-quick-card rounded-2xl p-5">
+                <div class="flex justify-between items-start">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.8 1.8 0 0 0 .3 2l.1.1-2 3.4-.2-.1a1.8 1.8 0 0 0-2-.2"/>
+                            <path d="M4.6 9a1.8 1.8 0 0 0-.3-2l-.1-.1 2-3.4.2.1a1.8 1.8 0 0 0 2 .2"/>
+                        </svg>
+                    </div>
+                    <span class="text-cyan-300 text-xs">03 / PLC</span>
                 </div>
                 <h3 class="font-bold mt-5">PLC Work</h3>
-                <p class="text-slate-300 mt-2">Machine Repair</p>
+                <p class="text-sm text-slate-400 mt-2">Machine Control &amp; Repair</p>
+                <div class="ops-divider mt-5"></div>
+                <p class="text-xs text-cyan-200 mt-3">Open module ↗</p>
             </div>
-            <!-- Knowledge -->
-            <div onclick="openKnowledgePopup()" class="ops-card cursor-pointer">
-                <div class="icon-box">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                    </svg>
+
+            <div onclick="openKnowledgePopup()" role="button" tabindex="0"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openKnowledgePopup()}"
+                class="ops-card ops-quick-card rounded-2xl p-5">
+                <div class="flex justify-between items-start">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                    </div>
+                    <span class="text-cyan-300 text-xs">04 / KB</span>
                 </div>
                 <h3 class="font-bold mt-5">Knowledge Hub</h3>
-                <p class="text-slate-300 mt-2">Technical Database</p>
+                <p class="text-sm text-slate-400 mt-2">Technical Database</p>
+                <div class="ops-divider mt-5"></div>
+                <p class="text-xs text-cyan-200 mt-3">Explore library ↗</p>
             </div>
         </div>
     </section>
+
+    <!-- SYSTEM CONSOLE -->
+    <section class="grid grid-cols-1 lg:grid-cols-5 gap-5">
+        <div class="ops-panel p-5 sm:p-6 lg:col-span-3">
+            <div class="flex items-start justify-between gap-4 mb-5">
+                <div>
+                    <div class="ops-eyebrow mb-2">Runtime monitor</div>
+                    <h2 class="text-lg font-bold">System Console</h2>
+                    <p class="text-sm text-slate-400 mt-1">Basic browser-side diagnostics</p>
+                </div>
+                <span class="ops-live-chip"><span class="ops-online-dot"></span>LIVE</span>
+            </div>
+
+            <div class="ops-terminal">
+                <div class="ops-terminal-line">
+                    <span>[OK]</span><span>Dashboard interface loaded</span>
+                </div>
+                <div class="ops-terminal-line">
+                    <span>[OK]</span><span>Navigation component configured</span>
+                </div>
+                <div class="ops-terminal-line">
+                    <span>[INFO]</span><span>Local data remains in browser storage</span>
+                </div>
+                <div class="ops-terminal-line">
+                    <span>[READY]</span><span>Awaiting operator action</span>
+                </div>
+            </div>
+            <p class="text-xs text-slate-500 mt-5">
+                Note: This console shows interface information, not a live PLC or server connection test.
+            </p>
+        </div>
+
+        <div class="ops-panel p-5 sm:p-6 lg:col-span-2">
+            <div class="ops-eyebrow mb-2">Operator workspace</div>
+            <h2 class="text-lg font-bold">Workspace Status</h2>
+
+            <div class="mt-5 space-y-4">
+                <div class="flex items-center justify-between gap-3">
+                    <span class="text-sm text-slate-400">Dashboard UI</span>
+                    <span class="text-xs text-emerald-300">READY</span>
+                </div>
+                <div class="h-px bg-slate-700/50"></div>
+                <div class="flex items-center justify-between gap-3">
+                    <span class="text-sm text-slate-400">Navigation</span>
+                    <span class="text-xs text-emerald-300">ENABLED</span>
+                </div>
+                <div class="h-px bg-slate-700/50"></div>
+                <div class="flex items-center justify-between gap-3">
+                    <span class="text-sm text-slate-400">Data policy</span>
+                    <span class="text-xs text-cyan-200">PRESERVE</span>
+                </div>
+            </div>
+
+            <div class="mt-6 rounded-xl border border-cyan-400/15 bg-cyan-400/5 p-4">
+                <p class="text-sm font-semibold text-cyan-100">Operator tip</p>
+                <p class="text-xs text-slate-400 leading-relaxed mt-2">
+                    Use the navigation menu to access Maintenance and other operational modules.
+                </p>
+            </div>
+        </div>
+    </section>
+
     <!-- KNOWLEDGE POPUP -->
     <div id="knowledge-popup"
-        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur">
-        <div class="ops-card w-[90%] max-w-4xl">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Knowledge Center</h2>
+        class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur">
+        <div class="ops-card w-full max-w-4xl rounded-2xl p-5 sm:p-7">
+            <div class="flex justify-between items-center gap-4 mb-6">
+                <div>
+                    <div class="ops-eyebrow mb-2">Technical library</div>
+                    <h2 class="text-2xl font-bold">Knowledge Center</h2>
+                </div>
                 <button onclick="closeKnowledgePopup()"
-                    class="text-xl hover:scale-125 transition">
-                    <svg width="24" height="24" viewBox="0 0 24 24">
+                    aria-label="Close Knowledge Center"
+                    class="w-10 h-10 rounded-lg border border-slate-700 text-slate-300 hover:bg-slate-800 transition flex items-center justify-center">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path stroke="currentColor" stroke-width="2"
                             d="M6 6l12 12M18 6L6 18"/>
                     </svg>
                 </button>
             </div>
-            <!-- KNOWLEDGE ITEMS -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div onclick="OPS.go('computer')" class="ops-card cursor-pointer">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div onclick="OPS.go('computer')" role="button" tabindex="0"
+                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();OPS.go('computer')}"
+                    class="ops-card rounded-xl p-4 cursor-pointer">
                     <div class="icon-box">
                         <svg viewBox="0 0 24 24">
                             <rect x="3" y="4" width="18" height="13" rx="2"/>
-                            <path d="M8 21h8"/>
-                            <path d="M12 17v4"/>
+                            <path d="M8 21h8M12 17v4"/>
                         </svg>
                     </div>
                     <h3 class="font-bold mt-4">Computer</h3>
+                    <p class="text-xs text-slate-400 mt-2">PC &amp; software</p>
                 </div>
-                <div onclick="OPS.go('camera')" class="ops-card cursor-pointer">
+
+                <div onclick="OPS.go('camera')" role="button" tabindex="0"
+                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();OPS.go('camera')}"
+                    class="ops-card rounded-xl p-4 cursor-pointer">
                     <div class="icon-box">
                         <svg viewBox="0 0 24 24">
                             <path d="M4 7h4l2-3h4l2 3h4v13H4z"/>
@@ -220,51 +688,95 @@
                         </svg>
                     </div>
                     <h3 class="font-bold mt-4">Camera</h3>
+                    <p class="text-xs text-slate-400 mt-2">Vision systems</p>
                 </div>
-                <div onclick="OPS.go('spss')" class="ops-card cursor-pointer">
+
+                <div onclick="OPS.go('spss')" role="button" tabindex="0"
+                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();OPS.go('spss')}"
+                    class="ops-card rounded-xl p-4 cursor-pointer">
                     <div class="icon-box">
                         <svg viewBox="0 0 24 24">
-                            <path d="M4 19h16"/>
-                            <path d="M7 16V8"/>
-                            <path d="M12 16V5"/>
-                            <path d="M17 16v-6"/>
+                            <path d="M4 19h16M7 16V8M12 16V5M17 16v-6"/>
                         </svg>
                     </div>
                     <h3 class="font-bold mt-4">SPSS</h3>
+                    <p class="text-xs text-slate-400 mt-2">Machine tools</p>
                 </div>
-                <div onclick="OPS.go('cps')" class="ops-card cursor-pointer">
+
+                <div onclick="OPS.go('cps')" role="button" tabindex="0"
+                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();OPS.go('cps')}"
+                    class="ops-card rounded-xl p-4 cursor-pointer">
                     <div class="icon-box">
                         <svg viewBox="0 0 24 24">
-                            <path d="M12 2l3 7h7l-5.5 4.5 2 7L12 17l-6.5 3.5 2-7L2 9h7z"/>
+                            <path d="m12 2 3 7h7l-5.5 4.5 2 7L12 17l-6.5 3.5 2-7L2 9h7z"/>
                         </svg>
                     </div>
                     <h3 class="font-bold mt-4">CPS</h3>
+                    <p class="text-xs text-slate-400 mt-2">Process support</p>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- RECENT ACTIVITY -->
     <section>
-        <h2 class="text-2xl font-bold mb-6">Recent Activity</h2>
+        <div class="flex flex-wrap items-end justify-between gap-3 mb-5">
+            <div>
+                <div class="ops-eyebrow mb-2">Event history</div>
+                <h2 class="ops-section-heading text-xl sm:text-2xl font-bold">Recent Activity</h2>
+            </div>
+            <span class="text-xs text-slate-500">LATEST LOCAL EVENTS</span>
+        </div>
+
         <div id="recent-list" class="space-y-4">
-            <div class="ops-card text-center text-slate-400">
+            <div class="ops-card rounded-2xl p-6 text-center text-slate-400">
                 No Activity
             </div>
         </div>
     </section>
+
+    <!-- FOOTER -->
+    <footer class="pt-3 pb-8">
+        <div class="ops-divider mb-5"></div>
+        <div class="flex flex-col sm:flex-row justify-between gap-2 text-xs text-slate-500">
+            <span>OPS PORTAL / OPERATIONS CONTROL CENTER</span>
+            <span>V4.0.0 · LOCAL-FIRST WORKSPACE</span>
+        </div>
+    </footer>
 </main>
+
 <!-- SCRIPT -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("logout-btn");
+
     if (btn) {
         btn.onclick = () => {
             sessionStorage.clear();
             window.location.href = "index.html";
         };
     }
+
+    const popup = document.getElementById("knowledge-popup");
+
+    if (popup) {
+        popup.addEventListener("click", event => {
+            if (event.target === popup) {
+                closeKnowledgePopup();
+            }
+        });
+    }
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            if (typeof closeKnowledgePopup === "function") {
+                closeKnowledgePopup();
+            }
+        }
+    });
 });
 </script>
+
 <script src="./components/common.js"></script>
 <script src="./components/sidebar.js"></script>
 <script src="./components/ui.js"></script>
